@@ -15,17 +15,44 @@
     }
   }
 
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
   window.MS = {};
   /**
    *
    * @module MSCharts
    **/
 
-  var MSCharts = function MSCharts(el, opts) {
-    _classCallCheck(this, MSCharts);
+  var MSCharts =
+  /*#__PURE__*/
+  function () {
+    function MSCharts(el, opts) {
+      _classCallCheck(this, MSCharts);
 
-    console.log();
-  };
+      console.log();
+    }
+
+    _createClass(MSCharts, [{
+      key: "render",
+      value: function render() {}
+    }]);
+
+    return MSCharts;
+  }();
 
   return MSCharts;
 

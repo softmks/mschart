@@ -7,4 +7,6 @@ export default class MSCharts {
     constructor(el, opts) {
         console.log();
     }
+    render() {
+    }
 }
