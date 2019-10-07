@@ -3,6 +3,7 @@ sudo: false
 language: node_js
 node_js:
   - 12
+cache: npm
 install:
   - npm install
 script:
@@ -11,5 +12,6 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
+  local_dir: dist/superchart
   on:
     branch: master
