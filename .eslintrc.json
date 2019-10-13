@@ -1,0 +1,29 @@
+{
+    "root": true,
+    "rules": {
+        "space-before-function-paren": 0
+    },
+    "env": {
+      "es6": true,
+      "browser": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "parser": "babel-eslint",
+      "sourceType": "module"
+    },
+    "extends": [
+      "plugin:prettier/recommended"
+    ],
+    "globals": {
+      "Blob": true,
+      "Image": true,
+      "URL": true,
+      "SC": true,
+      "SuperChart": true,
+      "screen": true,
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    }
+  }
