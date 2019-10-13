@@ -14,10 +14,14 @@
     "types/*.d.ts"
   ],
   "scripts": {
-    "clean": "del dist\\superchart.bundle.js",
+    "clean": "del dist\\*.*",
+    "dev": "rollup -w -c build/config.js --environment TARGET:web-umd-dev",
+    "dev:cjs": "rollup -w -c build/config.js --environment TARGET:web-cjs",
+    "dev:esm": "rollup -w -c build/config.js --environment TARGET:web-esm",
     "bundle": "node build/build.js",
     "build": "npm run bundle && webpack -p",
-    "build:amd": "webpack -p --mode production",
+    "build:umd": "rollup -w -c build/config.js --environment TARGET:web-umd-dev",
+    "build:amd": "webpack -p",
     "lint": "eslint src/**/*.js  --no-fix"
   },
   "keywords": [],
@@ -60,7 +64,7 @@
   },
   "dependencies": {
     "promise-polyfill": "8.1.3",
-    "svg.draggable.js": "^3.0.0",
+    "svg.draggable.js": "^2.2.2",
     "svg.easing.js": "^2.0.0",
     "svg.filter.js": "^2.0.2",
     "svg.pathmorphing.js": "^0.1.3",

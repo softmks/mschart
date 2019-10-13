@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Basic Line Chart</title>
+
+
+  <link href="../../assets/styles.css" rel="stylesheet" />
+  
+  <style>
+    div.lineChartTable {
+        display: table;
+        width: 100%;
+    }
+
+    div.lineChartTable > div {
+        display: table-row;
+        width: 100%;
+        text-align: center;
+    }
+    div.lineChartTable > div > div {
+        display: table-cell;
+        width: 20%;
+    }
+    #basic_line_chart {
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #brush_wrapper {
+      padding-top: 20px;
+      padding-left: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 22px 35px -16px rgba(0, 0, 0, 0.1);
+      max-width: 650px;
+      margin: 35px auto;
+    }
+
+    #chart-line {
+      position: relative;
+      margin-top: -40px;
+    }
+    #dashed_line_chart {
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #gradient_line_chart {
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #line_with_annotations_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #line_with_data_labels_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #line_with_image_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #line_with_missing_data_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #logarithmic_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #realtime_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #stepline_chart {
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #synch_wrapper {
+      padding-top: 20px;
+      padding-left: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 22px 35px -16px rgba(0, 0, 0, 0.1);
+      max-width: 650px;
+      margin: 35px auto;
+    }
+    #zoomable_time_series_chart{
+      max-width: 650px;
+      margin: 35px auto;
+    }
+  </style>
+</head>
+
+<body>
+
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Basic Line chart</U></B></div>
+            <div><B><U>Brush chart</U></B></div>
+        </div>   
+        <div>
+            <div><div id="basic_line_chart" style="border: 1px solid gray;"></div></div>
+            <div style="vertical-align: top;">
+                <div id="brush_wrapper" style="border: 1px solid gray;">
+                    <div id="chart-line2"></div>
+                    <div id="chart-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Dashed Line chart</U></B></div>
+            <div><B><U>Gradient Line chart</U></B></div>
+        </div>   
+        <div>
+            <div><div id="dashed_line_chart" style="border: 1px solid gray;"></div></div>
+            <div><div id="gradient_line_chart" style="border: 1px solid gray;"></div></div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Line With Annotations chart</U></B></div>
+            <div><B><U>Line With Data Labels chart</U></B></div>
+        </div>   
+        <div>
+            <div><div id="line_with_annotations_chart" style="border: 1px solid gray;"></div></div>
+            <div><div id="line_with_data_labels_chart" style="border: 1px solid gray;"></div></div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Line With Image chart</U></B></div>
+            <div><B><U>Line With Missing Data chart</U></B></div>
+        </div>   
+        <div>
+            <div><div id="line_with_image_chart" style="border: 1px solid gray;"></div></div>
+            <div><div id="line_with_missing_data_chart" style="border: 1px solid gray;"></div></div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Logarithmic chart</U></B></div>
+            <div><B><U>Realtime chart</U></B></div>
+        </div>   
+        <div>
+            <div><div id="logarithmic_chart" style="border: 1px solid gray;"></div></div>
+            <div><div id="realtime_chart" style="border: 1px solid gray;"></div></div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Stepline chart</U></B></div>
+            <div><B><U>Synching charts</U></B></div>
+        </div>   
+        <div>
+            <div><div id="stepline_chart" style="border: 1px solid gray;"></div></div>
+            <div style="vertical-align: top;">
+                <div id="synch_wrapper">
+                    <div id="synch_chart-line"></div>
+                    <div id="synch_chart-line2"></div>
+                    <div id="synch_chart-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lineChartTable">
+        <div>
+            <div><B><U>Zoomable Time Series chart</U></B></div>
+            <div><B><U></U></B></div>
+        </div>   
+        <div>
+            <div><div id="zoomable_time_series_chart" style="border: 1px solid gray;"></div></div>
+            <div></div>
+        </div>
+    </div>
+  <script src="../../../dist/mscharts.js"></script>
+  <script src="../../assets/stock-prices.js"></script>
+  <script src="../../assets/irregular-data-series.js"></script>
+  <script src="Line.js"></script>
+
+  <script>
+      basicLineChart();
+      brushLineChart();
+      dashedLineChart();
+      gradientLineChart();
+      lineWithAnnotations();
+      lineWithDataLabels();
+      lineWithImage();
+      lineWithMissingData();
+      logarithmicLine();
+      realtime();
+      stepline();
+      synchingCharts();
+      zoomableTimeSeries();
+  </script>
+</body>
+
+</html>

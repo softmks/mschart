@@ -2,10 +2,18 @@ var path = require('path')
 
 const config = {
   mode: 'development',
+  performance: {
+    maxAssetSize: 500000,
+    maxEntrypointSize: 500000,
+    hints: 'warning'
+  },
   entry: [path.resolve(__dirname, 'src/mscharts.js')],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'mscharts.bundle.js'
+    library: 'MSCharts',
+    libraryTarget: 'amd',
+    umdNamedDefine: false,
+    path: path.resolve(__dirname, 'dist/'),
+    filename: 'mscharts.amd.js'
   },
   module: {
     rules: [

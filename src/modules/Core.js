@@ -21,7 +21,7 @@ import Series from './Series'
 import TimeScale from './TimeScale'
 
 /**
- * ApexCharts Core Class responsible for major calculations and creating elements.
+ * MSCharts Core Class responsible for major calculations and creating elements.
  *
  * @module Core
  **/
@@ -1074,7 +1074,7 @@ export default class Core {
       ]
       // retro compatibility with single target option
       targets.forEach((target) => {
-        let targetChart = ApexCharts.getChartByID(target)
+        let targetChart = MSCharts.getChartByID(target)
         targetChart.w.globals.brushSource = this.ctx
 
         let updateSourceChart = () => {
@@ -1107,7 +1107,7 @@ export default class Core {
 
       w.config.chart.events.selection = (chart, e) => {
         targets.forEach((target) => {
-          let targetChart = ApexCharts.getChartByID(target)
+          let targetChart = MSCharts.getChartByID(target)
           let yaxis = Utils.clone(w.config.yaxis)
           if (w.config.chart.brush.autoScaleYaxis) {
             const scale = new Scales(targetChart)
