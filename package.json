@@ -1,7 +1,7 @@
 {
   "name": "mschart",
-  "version": "1.0.0",
-  "description": "A chart library",
+  "version": "0.0.2",
+  "description": "A javascript implementation of chart library",
   "main": "dist/mscharts.common.js",
   "module": "dist/mscharts.esm.js",
   "unpkg": "dist/mscharts.js",
@@ -24,13 +24,21 @@
     "build:amd": "webpack -p",
     "lint": "eslint src/**/*.js  --no-fix"
   },
-  "keywords": [],
+  "keywords": [
+    "javascript",
+    "mschart",
+    "chart",
+    "ui"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/softmks"
+    "url": "https://github.com/softmks/mschart"
   },
   "author": "Manoj Kumar",
-  "license": "MTS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/softmks/mschart/issues"
+  },
+  "homepage": "https://github.com/softmks/mschart",
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
