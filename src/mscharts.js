@@ -39,8 +39,8 @@ import './utils/DetectElementResize'
 
 import en from './locales/en.json'
 
-// global Apex object which user can use to override chart's defaults globally
-window.Apex = {}
+// global MS object which user can use to override chart's defaults globally
+window.MS = {}
 
 /**
  *
@@ -86,11 +86,11 @@ export default class MSCharts {
     return new Promise((resolve, reject) => {
       // only draw chart, if element found
       if (this.el !== null) {
-        if (typeof Apex._chartInstances === 'undefined') {
-          Apex._chartInstances = []
+        if (typeof MS._chartInstances === 'undefined') {
+          MS._chartInstances = []
         }
         if (this.w.config.chart.id) {
-          Apex._chartInstances.push({
+          MS._chartInstances.push({
             id: this.w.globals.chartID,
             group: this.w.config.chart.group,
             chart: this
@@ -440,7 +440,7 @@ export default class MSCharts {
         this.forceXAxisUpdate(options)
       }
 
-      /* fixes apexcharts.js#369 and react-apexcharts#46 */
+      /* fixes mscharts.js#369 and react-mscharts#46 */
       if (
         options.xaxis.categories &&
         options.xaxis.categories.length &&
@@ -623,7 +623,7 @@ export default class MSCharts {
    * Get charts in the same "group" (excluding the instance which is called upon) to perform operations on the other charts of the same group (eg., tooltip hovering)
    */
   getGroupedCharts() {
-    return Apex._chartInstances
+    return MS._chartInstances
       .filter((ch) => {
         if (ch.group) {
           return true
@@ -797,12 +797,12 @@ export default class MSCharts {
   destroy() {
     this.clear()
 
-    // remove the chart's instance from the global Apex._chartInstances
+    // remove the chart's instance from the global MS._chartInstances
     const chartID = this.w.config.chart.id
     if (chartID) {
-      Apex._chartInstances.forEach((c, i) => {
+      MS._chartInstances.forEach((c, i) => {
         if (c.id === chartID) {
-          Apex._chartInstances.splice(i, 1)
+          MS._chartInstances.splice(i, 1)
         }
       })
     }
@@ -815,23 +815,23 @@ export default class MSCharts {
   }
 
   /**
-   * Allows the user to provide data attrs in the element and the chart will render automatically when this method is called by searching for the elements containing 'data-apexcharts' attribute
+   * Allows the user to provide data attrs in the element and the chart will render automatically when this method is called by searching for the elements containing 'data-mscharts' attribute
    */
   static initOnLoad() {
-    const els = document.querySelectorAll('[data-apexcharts]')
+    const els = document.querySelectorAll('[data-mscharts]')
 
     for (let i = 0; i < els.length; i++) {
       const el = els[i]
       const options = JSON.parse(els[i].getAttribute('data-options'))
-      const apexChart = new MSCharts(el, options)
-      apexChart.render()
+      const msChart = new MSCharts(el, options)
+      msChart.render()
     }
   }
 
   /**
    * This static method allows users to call chart methods without necessarily from the
    * instance of the chart in case user has assigned chartID to the targetted chart.
-   * The chartID is used for mapping the instance stored in Apex._chartInstances global variable
+   * The chartID is used for mapping the instance stored in MS._chartInstances global variable
    *
    * This is helpful in cases when you don't have reference of the chart instance
    * easily and need to call the method from anywhere.
@@ -906,9 +906,7 @@ export default class MSCharts {
   toggleSeries(seriesName) {
     const targetElement = this.series.getSeriesByName(seriesName)
     let seriesCnt = parseInt(targetElement.getAttribute('data:realIndex'))
-    let isHidden = targetElement.classList.contains(
-      'apexcharts-series-collapsed'
-    )
+    let isHidden = targetElement.classList.contains('mscharts-series-collapsed')
     this.legend.toggleDataSeries(seriesCnt, isHidden)
   }
 
@@ -1009,7 +1007,7 @@ export default class MSCharts {
   }
 
   getChartArea() {
-    const el = this.w.globals.dom.baseEl.querySelector('.apexcharts-inner')
+    const el = this.w.globals.dom.baseEl.querySelector('.mscharts-inner')
 
     return el
   }
@@ -1046,11 +1044,11 @@ export default class MSCharts {
 
     if (w.globals.axisCharts) {
       elPath = w.globals.dom.Paper.select(
-        `.apexcharts-series[data\\:realIndex='${seriesIndex}'] path[j='${dataPointIndex}'], .apexcharts-series[data\\:realIndex='${seriesIndex}'] circle[j='${dataPointIndex}'], .apexcharts-series[data\\:realIndex='${seriesIndex}'] rect[j='${dataPointIndex}']`
+        `.mscharts-series[data\\:realIndex='${seriesIndex}'] path[j='${dataPointIndex}'], .mscharts-series[data\\:realIndex='${seriesIndex}'] circle[j='${dataPointIndex}'], .mscharts-series[data\\:realIndex='${seriesIndex}'] rect[j='${dataPointIndex}']`
       ).members[0]
     } else {
       elPath = w.globals.dom.Paper.select(
-        `.apexcharts-series[data\\:realIndex='${seriesIndex}']`
+        `.mscharts-series[data\\:realIndex='${seriesIndex}']`
       ).members[0]
 
       if (w.config.chart.type === 'pie' || w.config.chart.type === 'donut') {
@@ -1072,14 +1070,14 @@ export default class MSCharts {
   setCurrentLocaleValues(localeName) {
     let locales = this.w.config.chart.locales
 
-    // check if user has specified locales in global Apex variable
+    // check if user has specified locales in global MS variable
     // if yes - then extend those with local chart's locale
     if (
-      window.Apex.chart &&
-      window.Apex.chart.locales &&
-      window.Apex.chart.locales.length > 0
+      window.MS.chart &&
+      window.MS.chart.locales &&
+      window.MS.chart.locales.length > 0
     ) {
-      locales = this.w.config.chart.locales.concat(window.Apex.chart.locales)
+      locales = this.w.config.chart.locales.concat(window.MS.chart.locales)
     }
 
     // find the locale from the array of locales which user has set (either by chart.defaultLocale or by calling setLocale() method.)
@@ -1110,7 +1108,7 @@ export default class MSCharts {
   }
 
   static getChartByID(chartID) {
-    const c = Apex._chartInstances.filter((ch) => {
+    const c = MS._chartInstances.filter((ch) => {
       return ch.id === chartID
     })[0]
     return c.chart

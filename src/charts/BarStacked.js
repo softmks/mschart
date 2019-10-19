@@ -5,7 +5,7 @@ import Graphics from '../modules/Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts BarStacked Class responsible for drawing both Stacked Columns and Bars.
+ * MSCharts BarStacked Class responsible for drawing both Stacked Columns and Bars.
  *
  * @module BarStacked
  * The whole calculation for stacked bar/column is different from normal bar/column,
@@ -54,7 +54,7 @@ class BarStacked extends Bar {
     }
 
     let ret = this.graphics.group({
-      class: 'apexcharts-bar-series apexcharts-plot-series'
+      class: 'mscharts-bar-series mscharts-plot-series'
     })
 
     let x = 0
@@ -82,7 +82,7 @@ class BarStacked extends Bar {
 
       // el to which series will be drawn
       let elSeries = this.graphics.group({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[realIndex]),
 
         rel: i + 1,
@@ -91,7 +91,7 @@ class BarStacked extends Bar {
 
       // eldatalabels
       let elDataLabelsWrap = this.graphics.group({
-        class: 'apexcharts-datalabels'
+        class: 'mscharts-datalabels'
       })
 
       let strokeWidth = 0
@@ -401,7 +401,7 @@ class BarStacked extends Bar {
         w.config.plotOptions.bar.colors.backgroundBarOpacity
       )
       elSeries.add(rect)
-      rect.node.classList.add('apexcharts-backgroundBar')
+      rect.node.classList.add('mscharts-backgroundBar')
     }
 
     y = y + yDivision
@@ -538,7 +538,7 @@ class BarStacked extends Bar {
         w.config.plotOptions.bar.colors.backgroundBarOpacity
       )
       elSeries.add(rect)
-      rect.node.classList.add('apexcharts-backgroundBar')
+      rect.node.classList.add('mscharts-backgroundBar')
     }
 
     x = x + xDivision

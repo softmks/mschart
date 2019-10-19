@@ -2,7 +2,7 @@ import Graphics from './Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Series Class for interation with the Series of the chart.
+ * MSCharts Series Class for interation with the Series of the chart.
  *
  * @module Series
  **/
@@ -14,7 +14,7 @@ export default class Series {
   }
 
   getAllSeriesEls() {
-    return this.w.globals.dom.baseEl.querySelectorAll(`.apexcharts-series`)
+    return this.w.globals.dom.baseEl.querySelectorAll(`.mscharts-series`)
   }
 
   getSeriesByName(seriesName) {
@@ -28,7 +28,7 @@ export default class Series {
     function iterateOnAllCollapsedSeries(series) {
       for (let cs = 0; cs < series.length; cs++) {
         if (series[cs].index === index) {
-          elSeries.node.classList.add('apexcharts-series-collapsed')
+          elSeries.node.classList.add('mscharts-series-collapsed')
         }
       }
     }
@@ -60,9 +60,7 @@ export default class Series {
   toggleSeriesOnHover(e, targetElement) {
     const w = this.w
 
-    let allSeriesEls = w.globals.dom.baseEl.querySelectorAll(
-      `.apexcharts-series`
-    )
+    let allSeriesEls = w.globals.dom.baseEl.querySelectorAll(`.mscharts-series`)
 
     if (e.type === 'mousemove') {
       let seriesCnt = parseInt(targetElement.getAttribute('rel')) - 1
@@ -71,16 +69,16 @@ export default class Series {
       if (w.globals.axisCharts || w.config.chart.type === 'radialBar') {
         if (w.globals.axisCharts) {
           seriesEl = w.globals.dom.baseEl.querySelector(
-            `.apexcharts-series[data\\:realIndex='${seriesCnt}']`
+            `.mscharts-series[data\\:realIndex='${seriesCnt}']`
           )
         } else {
           seriesEl = w.globals.dom.baseEl.querySelector(
-            `.apexcharts-series[rel='${seriesCnt + 1}']`
+            `.mscharts-series[rel='${seriesCnt + 1}']`
           )
         }
       } else {
         seriesEl = w.globals.dom.baseEl.querySelector(
-          `.apexcharts-series[rel='${seriesCnt + 1}'] path`
+          `.mscharts-series[rel='${seriesCnt + 1}'] path`
         )
       }
 
@@ -105,7 +103,7 @@ export default class Series {
   highlightRangeInSeries(e, targetElement) {
     const w = this.w
     const allHeatMapElements = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-heatmap-rect'
+      '.mscharts-heatmap-rect'
     )
 
     const allActive = function() {
@@ -221,7 +219,7 @@ export default class Series {
     }
 
     let linePaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-line-series .apexcharts-series'
+      '.mscharts-line-series .mscharts-series'
     )
     if (linePaths.length > 0) {
       for (let p = linePaths.length - 1; p >= 0; p--) {
@@ -230,7 +228,7 @@ export default class Series {
     }
 
     let areapaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-area-series .apexcharts-series'
+      '.mscharts-area-series .mscharts-series'
     )
 
     if (areapaths.length > 0) {
@@ -240,7 +238,7 @@ export default class Series {
     }
 
     let barPaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-bar-series .apexcharts-series'
+      '.mscharts-bar-series .mscharts-series'
     )
     if (barPaths.length > 0) {
       for (let p = 0; p < barPaths.length; p++) {
@@ -249,7 +247,7 @@ export default class Series {
     }
 
     let candlestickPaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-candlestick-series .apexcharts-series'
+      '.mscharts-candlestick-series .mscharts-series'
     )
     if (candlestickPaths.length > 0) {
       for (let p = 0; p < candlestickPaths.length; p++) {
@@ -258,7 +256,7 @@ export default class Series {
     }
 
     let radarPaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-radar-series .apexcharts-series'
+      '.mscharts-radar-series .mscharts-series'
     )
     if (radarPaths.length > 0) {
       for (let p = 0; p < radarPaths.length; p++) {
@@ -267,12 +265,12 @@ export default class Series {
     }
 
     let bubblepaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-bubble-series .apexcharts-series'
+      '.mscharts-bubble-series .mscharts-series'
     )
     if (bubblepaths.length > 0) {
       for (let s = 0; s < bubblepaths.length; s++) {
         let seriesEls = w.globals.dom.baseEl.querySelectorAll(
-          `.apexcharts-bubble-series .apexcharts-series[data\\:realIndex='${s}'] circle`
+          `.mscharts-bubble-series .mscharts-series[data\\:realIndex='${s}'] circle`
         )
         let dArr = []
 
@@ -288,12 +286,12 @@ export default class Series {
     }
 
     let scatterpaths = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-scatter-series .apexcharts-series'
+      '.mscharts-scatter-series .mscharts-series'
     )
     if (scatterpaths.length > 0) {
       for (let s = 0; s < scatterpaths.length; s++) {
         let seriesEls = w.globals.dom.baseEl.querySelectorAll(
-          `.apexcharts-scatter-series .apexcharts-series[data\\:realIndex='${s}'] circle`
+          `.mscharts-scatter-series .mscharts-series[data\\:realIndex='${s}'] circle`
         )
         let dArr = []
 
@@ -309,13 +307,13 @@ export default class Series {
     }
 
     let heatmapColors = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-heatmap .apexcharts-series'
+      '.mscharts-heatmap .mscharts-series'
     )
 
     if (heatmapColors.length > 0) {
       for (let h = 0; h < heatmapColors.length; h++) {
         let seriesEls = w.globals.dom.baseEl.querySelectorAll(
-          `.apexcharts-heatmap .apexcharts-series[data\\:realIndex='${h}'] rect`
+          `.mscharts-heatmap .mscharts-series[data\\:realIndex='${h}'] rect`
         )
 
         let dArr = []
@@ -376,10 +374,10 @@ export default class Series {
         fontFamily: noDataOpts.style.fontFamily,
         foreColor: noDataOpts.style.color,
         opacity: 1,
-        class: 'apexcharts-text-nodata'
+        class: 'mscharts-text-nodata'
       })
 
-      titleText.node.setAttribute('class', 'apexcharts-title-text')
+      titleText.node.setAttribute('class', 'mscharts-title-text')
 
       w.globals.dom.Paper.add(titleText)
     }

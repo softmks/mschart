@@ -1,7 +1,7 @@
 import Utils from '../../utils/Utils'
 
 /**
- * ApexCharts Tooltip.Intersect Class.
+ * MSCharts Tooltip.Intersect Class.
  *
  * @module Tooltip.Intersect
  **/
@@ -20,7 +20,7 @@ class Intersect {
     const ttCtx = this.ttCtx
     const w = this.w
 
-    if (e.target.classList.contains('apexcharts-heatmap-rect')) {
+    if (e.target.classList.contains('mscharts-heatmap-rect')) {
       let i = this.getAttr(e, 'i')
       let j = this.getAttr(e, 'j')
       let cx = this.getAttr(e, 'cx')
@@ -66,7 +66,7 @@ class Intersect {
 
     let i
     let j
-    if (e.target.classList.contains('apexcharts-marker')) {
+    if (e.target.classList.contains('mscharts-marker')) {
       let cx = parseInt(opt.paths.getAttribute('cx'))
       let cy = parseInt(opt.paths.getAttribute('cy'))
       let val = parseFloat(opt.paths.getAttribute('val'))
@@ -78,7 +78,7 @@ class Intersect {
         ) - 1
 
       if (ttCtx.intersect) {
-        const el = Utils.findAncestor(opt.paths, 'apexcharts-series')
+        const el = Utils.findAncestor(opt.paths, 'mscharts-series')
         if (el) {
           i = parseInt(el.getAttribute('data:realIndex'))
         }
@@ -179,7 +179,7 @@ class Intersect {
 
     // if tooltip is still null, querySelector
     if (ttCtx.tooltip === null) {
-      ttCtx.tooltip = w.globals.dom.baseEl.querySelector('.apexcharts-tooltip')
+      ttCtx.tooltip = w.globals.dom.baseEl.querySelector('.mscharts-tooltip')
     }
 
     if (!w.config.tooltip.shared) {
@@ -238,9 +238,9 @@ class Intersect {
     const cl = e.target.classList
 
     if (
-      cl.contains('apexcharts-bar-area') ||
-      cl.contains('apexcharts-candlestick-area') ||
-      cl.contains('apexcharts-rangebar-area')
+      cl.contains('mscharts-bar-area') ||
+      cl.contains('mscharts-candlestick-area') ||
+      cl.contains('mscharts-rangebar-area')
     ) {
       let bar = e.target
       let barRect = bar.getBoundingClientRect()

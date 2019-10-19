@@ -3,7 +3,7 @@ import Graphics from './Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Markers Class for drawing points on y values in axes charts.
+ * MSCharts Markers Class for drawing points on y values in axes charts.
  *
  * @module Markers
  **/
@@ -49,7 +49,7 @@ export default class Markers {
 
     if (w.globals.markers.size[seriesIndex] > 0) {
       elPointsWrap = graphics.group({
-        class: 'apexcharts-series-markers'
+        class: 'mscharts-series-markers'
       })
 
       elPointsWrap.attr(
@@ -66,7 +66,7 @@ export default class Markers {
         if (j === 1 && q === 0) dataPointIndex = 0
         if (j === 1 && q === 1) dataPointIndex = 1
 
-        let PointClasses = 'apexcharts-marker'
+        let PointClasses = 'mscharts-marker'
         if (
           (w.config.chart.type === 'line' || w.config.chart.type === 'area') &&
           !w.globals.comboCharts &&
@@ -83,7 +83,7 @@ export default class Markers {
           if (Utils.isNumber(p.y[q])) {
             PointClasses += ` w${(Math.random() + 1).toString(36).substring(4)}`
           } else {
-            PointClasses = 'apexcharts-nullpoint'
+            PointClasses = 'mscharts-nullpoint'
           }
 
           let opts = this.getMarkerConfig(

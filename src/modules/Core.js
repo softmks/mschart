@@ -80,21 +80,21 @@ export default class Core {
       (cnf.chart.type === 'bar' || cnf.chart.type === 'rangeBar') &&
       cnf.plotOptions.bar.horizontal
 
-    gl.chartClass = '.apexcharts' + gl.cuid
+    gl.chartClass = '.mscharts' + gl.cuid
 
     gl.dom.baseEl = this.el
 
     gl.dom.elWrap = document.createElement('div')
     Graphics.setAttrs(gl.dom.elWrap, {
       id: gl.chartClass.substring(1),
-      class: 'apexcharts-canvas ' + gl.chartClass.substring(1)
+      class: 'mscharts-canvas ' + gl.chartClass.substring(1)
     })
     this.el.appendChild(gl.dom.elWrap)
 
     gl.dom.Paper = new window.SVG.Doc(gl.dom.elWrap)
     gl.dom.Paper.attr({
-      class: 'apexcharts-svg',
-      'xmlns:data': 'ApexChartsNS',
+      class: 'mscharts-svg',
+      'xmlns:data': 'MSChartsNS',
       transform: `translate(${cnf.chart.offsetX}, ${cnf.chart.offsetY})`
     })
 
@@ -103,13 +103,13 @@ export default class Core {
     this.setSVGDimensions()
 
     gl.dom.elGraphical = gl.dom.Paper.group().attr({
-      class: 'apexcharts-inner apexcharts-graphical'
+      class: 'mscharts-inner mscharts-graphical'
     })
 
     gl.dom.elDefs = gl.dom.Paper.defs()
 
     gl.dom.elLegendWrap = document.createElement('div')
-    gl.dom.elLegendWrap.classList.add('apexcharts-legend')
+    gl.dom.elLegendWrap.classList.add('mscharts-legend')
     gl.dom.elWrap.appendChild(gl.dom.elLegendWrap)
 
     // gl.dom.Paper.add(gl.dom.elLegendWrap)
@@ -369,11 +369,11 @@ export default class Core {
     }
 
     let radialEl = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-radialbar .apexcharts-tracks'
+      '.mscharts-radialbar .mscharts-tracks'
     )
 
     let radialElDataLabels = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-radialbar .apexcharts-datalabels-group'
+      '.mscharts-radialbar .mscharts-datalabels-group'
     )
 
     let chartInnerDimensions = w.globals.radialSize * 2
@@ -682,7 +682,7 @@ export default class Core {
     const rangeEnd = []
 
     const err =
-      'Please provide [Start, End] values in valid format. Read more https://apexcharts.com/docs/series/#rangecharts'
+      'Please provide [Start, End] values in valid format. Read more https://mscharts.com/docs/series/#rangecharts'
 
     const serObj = new Series(this.ctx)
     const activeIndex = serObj.getActiveConfigSeriesIndex()
@@ -717,7 +717,7 @@ export default class Core {
     const serC = []
 
     const err =
-      'Please provide [Open, High, Low and Close] values in valid format. Read more https://apexcharts.com/docs/series/#candlestick'
+      'Please provide [Open, High, Low and Close] values in valid format. Read more https://mscharts.com/docs/series/#candlestick'
 
     if (format === 'array') {
       if (ser[i].data[0][1].length !== 4) {

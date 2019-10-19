@@ -4,7 +4,7 @@ import Graphics from '../modules/Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts RangeBar Class responsible for drawing Range/Timeline Bars.
+ * MSCharts RangeBar Class responsible for drawing Range/Timeline Bars.
  *
  * @module RangeBar
  **/
@@ -24,7 +24,7 @@ class RangeBar extends Bar {
     this.initVariables(series)
 
     let ret = graphics.group({
-      class: 'apexcharts-rangebar-series apexcharts-plot-series'
+      class: 'mscharts-rangebar-series mscharts-plot-series'
     })
 
     for (let i = 0, bc = 0; i < series.length; i++, bc++) {
@@ -43,7 +43,7 @@ class RangeBar extends Bar {
 
       // el to which series will be drawn
       let elSeries = graphics.group({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[realIndex]),
         rel: i + 1,
         'data:realIndex': realIndex
@@ -77,7 +77,7 @@ class RangeBar extends Bar {
 
       // eldatalabels
       let elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-datalabels'
+        class: 'mscharts-datalabels'
       })
 
       for (

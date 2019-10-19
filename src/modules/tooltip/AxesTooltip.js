@@ -1,5 +1,5 @@
 /**
- * ApexCharts Tooltip.AxesTooltip Class.
+ * MSCharts Tooltip.AxesTooltip Class.
  *
  * @module Tooltip.AxesTooltip
  **/
@@ -22,14 +22,14 @@ class AxesTooltip {
 
     ttCtx.xaxisOffY = isBottom ? w.globals.gridHeight + 1 : 1
     const tooltipCssClass = isBottom
-      ? 'apexcharts-xaxistooltip apexcharts-xaxistooltip-bottom'
-      : 'apexcharts-xaxistooltip apexcharts-xaxistooltip-top'
+      ? 'mscharts-xaxistooltip mscharts-xaxistooltip-bottom'
+      : 'mscharts-xaxistooltip mscharts-xaxistooltip-top'
 
     let renderTo = w.globals.dom.elWrap
 
     if (ttCtx.blxaxisTooltip) {
       let xaxisTooltip = w.globals.dom.baseEl.querySelector(
-        '.apexcharts-xaxistooltip'
+        '.mscharts-xaxistooltip'
       )
 
       if (xaxisTooltip === null) {
@@ -42,7 +42,7 @@ class AxesTooltip {
         renderTo.appendChild(ttCtx.xaxisTooltip)
 
         ttCtx.xaxisTooltipText = document.createElement('div')
-        ttCtx.xaxisTooltipText.classList.add('apexcharts-xaxistooltip-text')
+        ttCtx.xaxisTooltipText.classList.add('mscharts-xaxistooltip-text')
 
         ttCtx.xaxisTooltipText.style.fontFamily =
           w.config.xaxis.tooltip.style.fontFamily || w.config.chart.fontFamily
@@ -68,15 +68,15 @@ class AxesTooltip {
 
       ttCtx.yaxisOffX = isRight ? w.globals.gridWidth + 1 : 1
       let tooltipCssClass = isRight
-        ? `apexcharts-yaxistooltip apexcharts-yaxistooltip-${i} apexcharts-yaxistooltip-right`
-        : `apexcharts-yaxistooltip apexcharts-yaxistooltip-${i} apexcharts-yaxistooltip-left`
+        ? `mscharts-yaxistooltip mscharts-yaxistooltip-${i} mscharts-yaxistooltip-right`
+        : `mscharts-yaxistooltip mscharts-yaxistooltip-${i} mscharts-yaxistooltip-left`
 
       w.globals.yAxisSameScaleIndices.map((samescales, ssi) => {
         samescales.map((s, si) => {
           if (si === i) {
             tooltipCssClass += w.config.yaxis[si].show
               ? ` `
-              : ` apexcharts-yaxistooltip-hidden`
+              : ` mscharts-yaxistooltip-hidden`
           }
         })
       })
@@ -85,7 +85,7 @@ class AxesTooltip {
 
       if (ttCtx.blyaxisTooltip) {
         let yaxisTooltip = w.globals.dom.baseEl.querySelector(
-          `.apexcharts-yaxistooltip apexcharts-yaxistooltip-${i}`
+          `.mscharts-yaxistooltip mscharts-yaxistooltip-${i}`
         )
 
         if (yaxisTooltip === null) {
@@ -100,9 +100,7 @@ class AxesTooltip {
           if (i === 0) ttCtx.yaxisTooltipText = []
 
           ttCtx.yaxisTooltipText.push(document.createElement('div'))
-          ttCtx.yaxisTooltipText[i].classList.add(
-            'apexcharts-yaxistooltip-text'
-          )
+          ttCtx.yaxisTooltipText[i].classList.add('mscharts-yaxistooltip-text')
 
           ttCtx.yaxisTooltip.appendChild(ttCtx.yaxisTooltipText[i])
         }
@@ -126,7 +124,7 @@ class AxesTooltip {
         let count = w.globals.labels.length
         ttCtx.xcrosshairsWidth = w.globals.gridWidth / count
       } else if (w.config.xaxis.crosshairs.width === 'barWidth') {
-        let bar = w.globals.dom.baseEl.querySelector('.apexcharts-bar-area')
+        let bar = w.globals.dom.baseEl.querySelector('.mscharts-bar-area')
         if (bar !== null) {
           let barWidth = parseFloat(bar.getAttribute('barWidth'))
           ttCtx.xcrosshairsWidth = barWidth
@@ -135,7 +133,7 @@ class AxesTooltip {
         }
       }
     } else {
-      let bar = w.globals.dom.baseEl.querySelector('.apexcharts-bar-area')
+      let bar = w.globals.dom.baseEl.querySelector('.mscharts-bar-area')
       if (bar !== null && w.config.xaxis.crosshairs.width === 'barWidth') {
         let barWidth = parseFloat(bar.getAttribute('barWidth'))
         ttCtx.xcrosshairsWidth = barWidth
@@ -161,11 +159,11 @@ class AxesTooltip {
 
     // set ycrosshairs height
     ttCtx.ycrosshairs = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-ycrosshairs'
+      '.mscharts-ycrosshairs'
     )
 
     ttCtx.ycrosshairsHidden = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-ycrosshairs-hidden'
+      '.mscharts-ycrosshairs-hidden'
     )
   }
 

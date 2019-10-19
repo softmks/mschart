@@ -1,7 +1,7 @@
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Animation Class.
+ * MSCharts Animation Class.
  *
  * @module Animations
  **/

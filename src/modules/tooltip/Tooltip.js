@@ -9,7 +9,7 @@ import XAxis from './../axes/XAxis'
 import Utils from './Utils'
 
 /**
- * ApexCharts Core Tooltip Class to handle the tooltip generation.
+ * MSCharts Core Tooltip Class to handle the tooltip generation.
  *
  * @module Tooltip
  **/
@@ -38,15 +38,15 @@ export default class Tooltip {
 
   getElTooltip(ctx) {
     if (!ctx) ctx = this
-    return ctx.w.globals.dom.baseEl.querySelector('.apexcharts-tooltip')
+    return ctx.w.globals.dom.baseEl.querySelector('.mscharts-tooltip')
   }
 
   getElXCrosshairs() {
-    return this.w.globals.dom.baseEl.querySelector('.apexcharts-xcrosshairs')
+    return this.w.globals.dom.baseEl.querySelector('.mscharts-xcrosshairs')
   }
 
   getElGrid() {
-    return this.w.globals.dom.baseEl.querySelector('.apexcharts-grid')
+    return this.w.globals.dom.baseEl.querySelector('.mscharts-grid')
   }
 
   drawTooltip(xyRatios) {
@@ -62,7 +62,7 @@ export default class Tooltip {
     }
 
     const tooltipEl = document.createElement('div')
-    tooltipEl.classList.add('apexcharts-tooltip')
+    tooltipEl.classList.add('mscharts-tooltip')
     tooltipEl.classList.add(this.tConfig.theme)
     w.globals.dom.elWrap.appendChild(tooltipEl)
 
@@ -99,7 +99,7 @@ export default class Tooltip {
 
     if (this.showTooltipTitle) {
       this.tooltipTitle = document.createElement('div')
-      this.tooltipTitle.classList.add('apexcharts-tooltip-title')
+      this.tooltipTitle.classList.add('mscharts-tooltip-title')
       this.tooltipTitle.style.fontFamily =
         this.tConfig.style.fontFamily || w.config.chart.fontFamily
       this.tooltipTitle.style.fontSize = this.tConfig.style.fontSize
@@ -116,7 +116,7 @@ export default class Tooltip {
     }
 
     this.legendLabels = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-legend-text'
+      '.mscharts-legend-text'
     )
 
     this.ttItems = this.createTTElements(ttItemsCnt)
@@ -130,24 +130,24 @@ export default class Tooltip {
     const tooltipEl = this.getElTooltip()
     for (let i = 0; i < ttItemsCnt; i++) {
       let gTxt = document.createElement('div')
-      gTxt.classList.add('apexcharts-tooltip-series-group')
+      gTxt.classList.add('mscharts-tooltip-series-group')
       if (
         this.tConfig.shared &&
         this.tConfig.enabledOnSeries &&
         Array.isArray(this.tConfig.enabledOnSeries)
       ) {
         if (this.tConfig.enabledOnSeries.indexOf(i) < 0) {
-          gTxt.classList.add('apexcharts-tooltip-series-group-hidden')
+          gTxt.classList.add('mscharts-tooltip-series-group-hidden')
         }
       }
 
       let point = document.createElement('span')
-      point.classList.add('apexcharts-tooltip-marker')
+      point.classList.add('mscharts-tooltip-marker')
       point.style.backgroundColor = w.globals.colors[i]
       gTxt.appendChild(point)
 
       const gYZ = document.createElement('div')
-      gYZ.classList.add('apexcharts-tooltip-text')
+      gYZ.classList.add('mscharts-tooltip-text')
 
       gYZ.style.fontFamily =
         this.tConfig.style.fontFamily || w.config.chart.fontFamily
@@ -155,26 +155,26 @@ export default class Tooltip {
 
       // y values group
       const gYValText = document.createElement('div')
-      gYValText.classList.add('apexcharts-tooltip-y-group')
+      gYValText.classList.add('mscharts-tooltip-y-group')
 
       let txtLabel = document.createElement('span')
-      txtLabel.classList.add('apexcharts-tooltip-text-label')
+      txtLabel.classList.add('mscharts-tooltip-text-label')
       gYValText.appendChild(txtLabel)
 
       let txtValue = document.createElement('span')
-      txtValue.classList.add('apexcharts-tooltip-text-value')
+      txtValue.classList.add('mscharts-tooltip-text-value')
       gYValText.appendChild(txtValue)
 
       // z values group
       const gZValText = document.createElement('div')
-      gZValText.classList.add('apexcharts-tooltip-z-group')
+      gZValText.classList.add('mscharts-tooltip-z-group')
 
       let txtZLabel = document.createElement('span')
-      txtZLabel.classList.add('apexcharts-tooltip-text-z-label')
+      txtZLabel.classList.add('mscharts-tooltip-text-z-label')
       gZValText.appendChild(txtZLabel)
 
       let txtZValue = document.createElement('span')
-      txtZValue.classList.add('apexcharts-tooltip-text-z-value')
+      txtZValue.classList.add('mscharts-tooltip-text-z-value')
       gZValText.appendChild(txtZValue)
 
       gYZ.appendChild(gYValText)
@@ -230,19 +230,19 @@ export default class Tooltip {
         type === 'bubble'
       ) {
         points = w.globals.dom.baseEl.querySelectorAll(
-          ".apexcharts-series[data\\:longestSeries='true'] .apexcharts-marker"
+          ".mscharts-series[data\\:longestSeries='true'] .mscharts-marker"
         )
       } else if (commonBar) {
         points = w.globals.dom.baseEl.querySelectorAll(
-          '.apexcharts-series .apexcharts-bar-area, .apexcharts-series .apexcharts-candlestick-area, .apexcharts-series .apexcharts-rangebar-area'
+          '.mscharts-series .mscharts-bar-area, .mscharts-series .mscharts-candlestick-area, .mscharts-series .mscharts-rangebar-area'
         )
       } else if (type === 'heatmap') {
         points = w.globals.dom.baseEl.querySelectorAll(
-          '.apexcharts-series .apexcharts-heatmap'
+          '.mscharts-series .mscharts-heatmap'
         )
       } else if (type === 'radar') {
         points = w.globals.dom.baseEl.querySelectorAll(
-          '.apexcharts-series .apexcharts-marker'
+          '.mscharts-series .mscharts-marker'
         )
       }
 
@@ -271,15 +271,13 @@ export default class Tooltip {
     ) {
       this.addPointsEventsListeners(seriesHoverParams)
     } else if (!w.globals.axisCharts || type === 'heatmap') {
-      let seriesAll = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-series'
-      )
+      let seriesAll = w.globals.dom.baseEl.querySelectorAll('.mscharts-series')
       this.addPathsEventListeners(seriesAll, seriesHoverParams)
     }
 
     if (this.showOnIntersect) {
       let linePoints = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-line-series .apexcharts-marker'
+        '.mscharts-line-series .mscharts-marker'
       )
       if (linePoints.length > 0) {
         // if we find any lineSeries, addEventListeners for them
@@ -287,7 +285,7 @@ export default class Tooltip {
       }
 
       let areaPoints = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-area-series .apexcharts-marker'
+        '.mscharts-area-series .mscharts-marker'
       )
       if (areaPoints.length > 0) {
         // if we find any areaSeries, addEventListeners for them
@@ -335,7 +333,7 @@ export default class Tooltip {
   addPointsEventsListeners(seriesHoverParams) {
     let w = this.w
     let points = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-series-markers .apexcharts-marker'
+      '.mscharts-series-markers .mscharts-marker'
     )
     this.addPathsEventListeners(points, seriesHoverParams)
   }
@@ -343,7 +341,7 @@ export default class Tooltip {
   addBarsEventListeners(seriesHoverParams) {
     let w = this.w
     let bars = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-bar-area, .apexcharts-candlestick-area, .apexcharts-rangebar-area'
+      '.mscharts-bar-area, .mscharts-candlestick-area, .mscharts-rangebar-area'
     )
 
     this.addPathsEventListeners(bars, seriesHoverParams)
@@ -663,7 +661,7 @@ export default class Tooltip {
     let w = this.w
     let graphics = new Graphics(this.ctx)
 
-    let allPaths = w.globals.dom.Paper.select(`.apexcharts-bar-area`)
+    let allPaths = w.globals.dom.Paper.select(`.mscharts-bar-area`)
 
     for (let b = 0; b < allPaths.length; b++) {
       graphics.pathMouseLeave(allPaths[b])
@@ -692,7 +690,7 @@ export default class Tooltip {
     if (this.blyaxisTooltip) {
       if (this.yaxisTTEls === null) {
         this.yaxisTTEls = w.globals.dom.baseEl.querySelectorAll(
-          '.apexcharts-yaxistooltip'
+          '.mscharts-yaxistooltip'
         )
       }
       for (let i = 0; i < this.yaxisTTEls.length; i++) {
@@ -710,13 +708,13 @@ export default class Tooltip {
 
   getElMarkers() {
     return this.w.globals.dom.baseEl.querySelectorAll(
-      ' .apexcharts-series-markers'
+      ' .mscharts-series-markers'
     )
   }
 
   getAllMarkers() {
     return this.w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-series-markers .apexcharts-marker'
+      '.mscharts-series-markers .mscharts-marker'
     )
   }
 
@@ -727,7 +725,7 @@ export default class Tooltip {
 
   getElBars() {
     return this.w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-bar-series,  .apexcharts-candlestick-series, .apexcharts-rangebar-series'
+      '.mscharts-bar-series,  .mscharts-candlestick-series, .mscharts-rangebar-series'
     )
   }
 
@@ -824,9 +822,7 @@ export default class Tooltip {
         if (this.barSeriesHeight > 0) {
           // hover state, activate snap filter
           let graphics = new Graphics(this.ctx)
-          let paths = w.globals.dom.Paper.select(
-            `.apexcharts-bar-area[j='${j}']`
-          )
+          let paths = w.globals.dom.Paper.select(`.mscharts-bar-area[j='${j}']`)
 
           // de-activate first
           this.deactivateHoverFilter()

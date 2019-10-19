@@ -3,8 +3,8 @@ import Utils from './../../utils/Utils'
 export default class Globals {
   globalVars(config) {
     return {
-      chartID: null, // chart ID - apexcharts-cuid
-      cuid: null, // chart ID - random numbers excluding "apexcharts" part
+      chartID: null, // chart ID - mscharts-cuid
+      cuid: null, // chart ID - random numbers excluding "mscharts" part
       events: {
         beforeMount: [],
         mounted: [],

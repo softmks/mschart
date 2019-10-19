@@ -55,7 +55,7 @@ class Crosshairs {
       }
 
       xcrosshairs.attr({
-        class: 'apexcharts-xcrosshairs',
+        class: 'mscharts-xcrosshairs',
         x: 0,
         y: 0,
         y2: w.globals.gridHeight,
@@ -103,7 +103,7 @@ class Crosshairs {
         crosshair.stroke.width
       )
       ycrosshairs.attr({
-        class: 'apexcharts-ycrosshairs'
+        class: 'mscharts-ycrosshairs'
       })
 
       w.globals.dom.elGraphical.add(ycrosshairs)
@@ -120,7 +120,7 @@ class Crosshairs {
       0
     )
     ycrosshairsHidden.attr({
-      class: 'apexcharts-ycrosshairs-hidden'
+      class: 'mscharts-ycrosshairs-hidden'
     })
 
     w.globals.dom.elGraphical.add(ycrosshairsHidden)

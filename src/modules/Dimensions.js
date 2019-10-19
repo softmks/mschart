@@ -4,7 +4,7 @@ import Utils from './../utils/Utils'
 import YAxis from './axes/YAxis'
 
 /**
- * ApexCharts Dimensions Class for calculating rects of all elements that are drawn and will be drawn.
+ * MSCharts Dimensions Class for calculating rects of all elements that are drawn and will be drawn.
  *
  * @module Dimensions
  **/
@@ -726,7 +726,7 @@ export default class Dimensions {
     const floating =
       type === 'title' ? w.config.title.floating : w.config.subtitle.floating
 
-    let el = w.globals.dom.baseEl.querySelector(`.apexcharts-${type}-text`)
+    let el = w.globals.dom.baseEl.querySelector(`.mscharts-${type}-text`)
 
     if (el !== null && !floating) {
       let coord = el.getBoundingClientRect()
@@ -743,7 +743,7 @@ export default class Dimensions {
   getLegendsRect() {
     let w = this.w
 
-    let elLegendWrap = w.globals.dom.baseEl.querySelector('.apexcharts-legend')
+    let elLegendWrap = w.globals.dom.baseEl.querySelector('.mscharts-legend')
     let lgRect = Object.assign({}, Utils.getBoundingClientRect(elLegendWrap))
 
     if (

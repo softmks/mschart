@@ -2,7 +2,7 @@ import Formatters from '../Formatters'
 import Utils from './Utils'
 
 /**
- * ApexCharts Tooltip.Labels Class to draw texts on the tooltip.
+ * MSCharts Tooltip.Labels Class to draw texts on the tooltip.
  *
  * @module Tooltip.Labels
  **/
@@ -203,7 +203,7 @@ export default class Labels {
       if (ttCtx.tooltipTitle === null) {
         // get it once if null, and store it in class property
         ttCtx.tooltipTitle = w.globals.dom.baseEl.querySelector(
-          '.apexcharts-tooltip-title'
+          '.mscharts-tooltip-title'
         )
       }
       ttCtx.tooltipTitle.innerHTML = xVal
@@ -214,18 +214,18 @@ export default class Labels {
       ttCtx.xaxisTooltipText.innerHTML = xAxisTTVal !== '' ? xAxisTTVal : xVal
     }
 
-    const ttYLabel = ttItems[t].querySelector('.apexcharts-tooltip-text-label')
+    const ttYLabel = ttItems[t].querySelector('.mscharts-tooltip-text-label')
     if (ttYLabel) {
       ttYLabel.innerHTML = seriesName ? seriesName + ': ' : ''
     }
-    const ttYVal = ttItems[t].querySelector('.apexcharts-tooltip-text-value')
+    const ttYVal = ttItems[t].querySelector('.mscharts-tooltip-text-value')
     if (ttYVal) {
       ttYVal.innerHTML = val
     }
 
     if (
       ttItemsChildren[0] &&
-      ttItemsChildren[0].classList.contains('apexcharts-tooltip-marker')
+      ttItemsChildren[0].classList.contains('mscharts-tooltip-marker')
     ) {
       if (
         w.config.tooltip.marker.fillColors &&
@@ -243,12 +243,10 @@ export default class Labels {
 
     if (zVal !== null) {
       const ttZLabel = ttItems[t].querySelector(
-        '.apexcharts-tooltip-text-z-label'
+        '.mscharts-tooltip-text-z-label'
       )
       ttZLabel.innerHTML = w.config.tooltip.z.title
-      const ttZVal = ttItems[t].querySelector(
-        '.apexcharts-tooltip-text-z-value'
-      )
+      const ttZVal = ttItems[t].querySelector('.mscharts-tooltip-text-z-value')
       ttZVal.innerHTML = zVal
     }
 
@@ -278,7 +276,7 @@ export default class Labels {
 
       // enable the first tooltip text group
       let firstTooltipSeriesGroup = w.globals.dom.baseEl.querySelector(
-        '.apexcharts-tooltip-series-group'
+        '.mscharts-tooltip-series-group'
       )
 
       if (firstTooltipSeriesGroup) {

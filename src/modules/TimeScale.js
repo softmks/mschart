@@ -3,7 +3,7 @@ import Dimensions from './Dimensions'
 import Graphics from './Graphics'
 import Utils from '../utils/Utils'
 /**
- * ApexCharts TimeScale Class for generating time ticks for x-axis.
+ * MSCharts TimeScale Class for generating time ticks for x-axis.
  *
  * @module TimeScale
  **/

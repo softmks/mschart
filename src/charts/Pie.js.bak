@@ -5,7 +5,7 @@ import Graphics from '../modules/Graphics'
 import Filters from '../modules/Filters'
 
 /**
- * ApexCharts Pie Class for drawing Pie / Donut Charts.
+ * MSCharts Pie Class for drawing Pie / Donut Charts.
  * @module Pie
  **/
 
@@ -68,7 +68,7 @@ class Pie {
     const graphics = new Graphics(this.ctx)
 
     let ret = graphics.group({
-      class: 'apexcharts-pie'
+      class: 'mscharts-pie'
     })
 
     if (w.globals.noData) return ret
@@ -182,7 +182,7 @@ class Pie {
     let graphics = new Graphics(this.ctx)
     let fill = new Fill(this.ctx)
     let g = graphics.group({
-      class: 'apexcharts-slices'
+      class: 'mscharts-slices'
     })
 
     let startAngle = 0
@@ -196,7 +196,7 @@ class Pie {
       // if(sectorAngleArr[i]>0) {
 
       let elPieArc = graphics.group({
-        class: `apexcharts-series apexcharts-pie-series`,
+        class: `mscharts-series mscharts-pie-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[i]),
         rel: i + 1,
         'data:realIndex': i
@@ -229,7 +229,7 @@ class Pie {
         strokeWidth: this.strokeWidth,
         fill: pathFill,
         fillOpacity: w.config.fill.opacity,
-        classes: `apexcharts-pie-area apexcharts-${w.config.chart.type}-slice-${i}`
+        classes: `mscharts-pie-area mscharts-${w.config.chart.type}-slice-${i}`
       })
 
       elPath.attr({
@@ -353,12 +353,12 @@ class Pie {
             filters.dropShadow(elPieLabel, textShadow)
           }
 
-          elPieLabel.node.classList.add('apexcharts-pie-label')
+          elPieLabel.node.classList.add('mscharts-pie-label')
           if (
             w.config.chart.animations.animate &&
             w.globals.resized === false
           ) {
-            elPieLabel.node.classList.add('apexcharts-pie-label-delay')
+            elPieLabel.node.classList.add('mscharts-pie-label-delay')
             elPieLabel.node.style.animationDelay =
               w.config.chart.animations.speed / 940 + 's'
           }
@@ -526,7 +526,7 @@ class Pie {
 
     let size = me.w.globals.radialSize + 4
     let elPath = w.globals.dom.Paper.select(
-      `.apexcharts-${w.config.chart.type.toLowerCase()}-slice-${i}`
+      `.mscharts-${w.config.chart.type.toLowerCase()}-slice-${i}`
     ).members[0]
 
     let pathFrom = elPath.attr('d')
@@ -544,7 +544,7 @@ class Pie {
       return
     } else {
       // reset all elems
-      let allEls = w.globals.dom.baseEl.querySelectorAll('.apexcharts-pie-area')
+      let allEls = w.globals.dom.baseEl.querySelectorAll('.mscharts-pie-area')
       Array.prototype.forEach.call(allEls, (pieSlice) => {
         pieSlice.setAttribute('data:pieClicked', 'false')
         let origPath = pieSlice.getAttribute('data:pathOrig')
@@ -679,7 +679,7 @@ class Pie {
     const graphics = new Graphics(this.ctx)
 
     let g = graphics.group({
-      class: 'apexcharts-datalabels-group',
+      class: 'mscharts-datalabels-group',
       transform: `translate(${opts.translateX ? opts.translateX : 0}, ${
         opts.translateY ? opts.translateY : 0
       })`
@@ -731,7 +731,7 @@ class Pie {
         fontSize: dataLabelsConfig.name.fontSize,
         fontFamily: dataLabelsConfig.name.fontFamily
       })
-      elLabel.node.classList.add('apexcharts-datalabel-label')
+      elLabel.node.classList.add('mscharts-datalabel-label')
       g.add(elLabel)
     }
 
@@ -749,7 +749,7 @@ class Pie {
         fontSize: dataLabelsConfig.value.fontSize,
         fontFamily: dataLabelsConfig.value.fontFamily
       })
-      elValue.node.classList.add('apexcharts-datalabel-value')
+      elValue.node.classList.add('mscharts-datalabel-value')
       g.add(elValue)
     }
 
@@ -783,10 +783,10 @@ class Pie {
     }
 
     let elLabel = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-datalabel-label'
+      '.mscharts-datalabel-label'
     )
     let elValue = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-datalabel-value'
+      '.mscharts-datalabel-value'
     )
 
     let lbFormatter = labelsConfig.value.formatter
@@ -821,7 +821,7 @@ class Pie {
     }
 
     let dataLabelsGroup = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-datalabels-group'
+      '.mscharts-datalabels-group'
     )
     if (dataLabelsGroup !== null) {
       dataLabelsGroup.style.opacity = 1
@@ -831,7 +831,7 @@ class Pie {
   revertDataLabelsInner(el, dataLabelsConfig, event) {
     let w = this.w
     let dataLabelsGroup = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-datalabels-group'
+      '.mscharts-datalabels-group'
     )
 
     if (dataLabelsConfig.total.show && w.globals.series.length > 1) {
@@ -842,7 +842,7 @@ class Pie {
         dataLabelsConfig.total.formatter(w)
       )
     } else {
-      const slices = document.querySelectorAll(`.apexcharts-pie-area`)
+      const slices = document.querySelectorAll(`.mscharts-pie-area`)
       let sliceOut = false
 
       Array.prototype.forEach.call(slices, (s) => {
@@ -860,7 +860,7 @@ class Pie {
           if (w.globals.selectedDataPoints[0].length > 0) {
             const index = w.globals.selectedDataPoints[0]
             const el = w.globals.dom.baseEl.querySelector(
-              `.apexcharts-${w.config.chart.type.toLowerCase()}-slice-${index}`
+              `.mscharts-${w.config.chart.type.toLowerCase()}-slice-${index}`
             )
 
             this.printDataLabelsInner(el, dataLabelsConfig)

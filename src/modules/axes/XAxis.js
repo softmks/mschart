@@ -2,7 +2,7 @@ import Graphics from '../Graphics'
 import AxesUtils from './AxesUtils'
 
 /**
- * ApexCharts XAxis Class for drawing X-Axis.
+ * MSCharts XAxis Class for drawing X-Axis.
  *
  * @module XAxis
  **/
@@ -52,12 +52,12 @@ export default class XAxis {
     let graphics = new Graphics(this.ctx)
 
     let elXaxis = graphics.group({
-      class: 'apexcharts-xaxis',
+      class: 'mscharts-xaxis',
       transform: `translate(${w.config.xaxis.offsetX}, ${w.config.xaxis.offsetY})`
     })
 
     let elXaxisTexts = graphics.group({
-      class: 'apexcharts-xaxis-texts-g',
+      class: 'mscharts-xaxis-texts-g',
       transform: `translate(${w.globals.translateXAxisX}, ${w.globals.translateXAxisY})`
     })
 
@@ -113,7 +113,7 @@ export default class XAxis {
             ? this.xaxisForeColors[i]
             : this.xaxisForeColors,
           cssClass:
-            'apexcharts-xaxis-label ' + w.config.xaxis.labels.style.cssClass
+            'mscharts-xaxis-label ' + w.config.xaxis.labels.style.cssClass
         })
 
         if (i === labelsLen - 1) {
@@ -136,7 +136,7 @@ export default class XAxis {
 
     if (w.config.xaxis.title.text !== undefined) {
       let elXaxisTitle = graphics.group({
-        class: 'apexcharts-xaxis-title'
+        class: 'mscharts-xaxis-title'
       })
 
       let elXAxisTitleText = graphics.drawText({
@@ -152,7 +152,7 @@ export default class XAxis {
         fontFamily: w.config.xaxis.title.style.fontFamily,
         foreColor: w.config.xaxis.title.style.color,
         cssClass:
-          'apexcharts-xaxis-title-text ' + w.config.xaxis.title.style.cssClass
+          'mscharts-xaxis-title-text ' + w.config.xaxis.title.style.cssClass
       })
 
       elXaxisTitle.add(elXAxisTitleText)
@@ -193,12 +193,12 @@ export default class XAxis {
       : 0
 
     let elYaxis = graphics.group({
-      class: 'apexcharts-yaxis apexcharts-xaxis-inversed',
+      class: 'mscharts-yaxis mscharts-xaxis-inversed',
       rel: realIndex
     })
 
     let elYaxisTexts = graphics.group({
-      class: 'apexcharts-yaxis-texts-g apexcharts-xaxis-inversed-texts-g',
+      class: 'mscharts-yaxis-texts-g mscharts-xaxis-inversed-texts-g',
       transform: 'translate(' + translateYAxisX + ', 0)'
     })
 
@@ -241,7 +241,7 @@ export default class XAxis {
             : ylabels.style.colors[i],
           fontSize: ylabels.style.fontSize,
           fontFamily: ylabels.style.fontFamily,
-          cssClass: 'apexcharts-yaxis-label ' + ylabels.style.cssClass
+          cssClass: 'mscharts-yaxis-label ' + ylabels.style.cssClass
         })
 
         elYaxisTexts.add(elLabel)
@@ -259,7 +259,7 @@ export default class XAxis {
 
     if (w.config.yaxis[0].title.text !== undefined) {
       let elXaxisTitle = graphics.group({
-        class: 'apexcharts-yaxis-title apexcharts-xaxis-title-inversed',
+        class: 'mscharts-yaxis-title mscharts-xaxis-title-inversed',
         transform: 'translate(' + translateYAxisX + ', 0)'
       })
 
@@ -272,8 +272,7 @@ export default class XAxis {
         fontSize: w.config.yaxis[0].title.style.fontSize,
         fontFamily: w.config.yaxis[0].title.style.fontFamily,
         cssClass:
-          'apexcharts-yaxis-title-text ' +
-          w.config.yaxis[0].title.style.cssClass
+          'mscharts-yaxis-title-text ' + w.config.yaxis[0].title.style.cssClass
       })
 
       elXaxisTitle.add(elXAxisTitleText)
@@ -330,7 +329,7 @@ export default class XAxis {
 
       // we are not returning anything, but appending directly to the element pased in param
       appendToElement.add(line)
-      line.node.classList.add('apexcharts-xaxis-tick')
+      line.node.classList.add('mscharts-xaxis-tick')
     }
   }
 
@@ -367,16 +366,16 @@ export default class XAxis {
 
     let graphics = new Graphics(this.ctx)
 
-    let xAxis = w.globals.dom.baseEl.querySelector('.apexcharts-xaxis-texts-g')
+    let xAxis = w.globals.dom.baseEl.querySelector('.mscharts-xaxis-texts-g')
 
     let xAxisTexts = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-xaxis-texts-g text'
+      '.mscharts-xaxis-texts-g text'
     )
     let yAxisTextsInversed = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-yaxis-inversed text'
+      '.mscharts-yaxis-inversed text'
     )
     let xAxisTextsInversed = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-xaxis-inversed-texts-g text'
+      '.mscharts-xaxis-inversed-texts-g text'
     )
 
     if (w.globals.rotateXLabels || w.config.xaxis.labels.rotateAlways) {

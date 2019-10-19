@@ -1,5 +1,5 @@
 /**
- * ApexCharts Tooltip.Utils Class to support Tooltip functionality.
+ * MSCharts Tooltip.Utils Class to support Tooltip functionality.
  *
  * @module Tooltip.Utils
  **/
@@ -275,7 +275,7 @@ export default class Utils {
 
     if (ttCtx.allTooltipSeriesGroups.length === 0) {
       ttCtx.allTooltipSeriesGroups = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-tooltip-series-group'
+        '.mscharts-tooltip-series-group'
       )
     }
 

@@ -105,6 +105,10 @@ function generateConfig(name) {
           {
             files: 'src/locales/*.*',
             dest: 'dist/locales'
+          },
+          {
+            files: 'src/index.html',
+            dest: 'dist'
           }
         ],
         {

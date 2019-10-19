@@ -1,5 +1,5 @@
 /**
- * ApexCharts Options for setting the initial configuration of ApexCharts
+ * MSCharts Options for setting the initial configuration of MSCharts
  **/
 import en from './../../locales/en.json'
 

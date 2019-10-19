@@ -15,10 +15,10 @@ class Exports {
 
     // hide some elements to avoid printing them on exported svg
     const xcrosshairs = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-xcrosshairs'
+      '.mscharts-xcrosshairs'
     )
     const ycrosshairs = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-ycrosshairs'
+      '.mscharts-ycrosshairs'
     )
     if (xcrosshairs) {
       xcrosshairs.setAttribute('x', -500)

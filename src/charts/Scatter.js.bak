@@ -5,7 +5,7 @@ import Graphics from '../modules/Graphics'
 import Markers from '../modules/Markers'
 
 /**
- * ApexCharts Scatter Class.
+ * MSCharts Scatter Class.
  * This Class also handles bubbles chart as currently there is no major difference in drawing them,
  * @module Scatter
  **/
@@ -34,7 +34,7 @@ export default class Scatter {
     let elPointsMain = opts.elParent
 
     let elPointsWrap = graphics.group({
-      class: `apexcharts-series-markers apexcharts-series-${w.config.chart.type}`
+      class: `mscharts-series-markers mscharts-series-${w.config.chart.type}`
     })
 
     elPointsWrap.attr('clip-path', `url(#gridRectMarkerMask${w.globals.cuid})`)
@@ -105,7 +105,7 @@ export default class Scatter {
     let markers = new Markers(this.ctx)
     const graphics = new Graphics(this.ctx)
 
-    const markerConfig = markers.getMarkerConfig('apexcharts-marker', i)
+    const markerConfig = markers.getMarkerConfig('mscharts-marker', i)
 
     let pathFillCircle = fill.fillPath({
       seriesNumber: realIndex,
@@ -201,7 +201,7 @@ export default class Scatter {
     filters.setSelectionFilter(circle, realIndex, dataPointIndex)
     markers.addEvents(circle)
 
-    circle.node.classList.add('apexcharts-marker')
+    circle.node.classList.add('mscharts-marker')
 
     return circle
   }

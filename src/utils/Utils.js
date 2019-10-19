@@ -1,5 +1,5 @@
 /*
- ** Generic functions which are not dependent on ApexCharts
+ ** Generic functions which are not dependent on MSCharts
  */
 
 class Utils {

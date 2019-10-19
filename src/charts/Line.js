@@ -7,7 +7,7 @@ import Scatter from './Scatter'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Line Class responsible for drawing Line / Area Charts.
+ * MSCharts Line Class responsible for drawing Line / Area Charts.
  * This class is also responsible for generating values for Bubble/Scatter charts, so need to rename it to Axis Charts to avoid confusions
  * @module Line
  **/
@@ -41,7 +41,7 @@ class Line {
     let type = w.globals.comboCharts ? ptype : w.config.chart.type
 
     let ret = graphics.group({
-      class: `apexcharts-${type}-series apexcharts-plot-series`
+      class: `mscharts-${type}-series mscharts-plot-series`
     })
 
     const coreUtils = new CoreUtils(this.ctx, w)
@@ -71,7 +71,7 @@ class Line {
           w.config.fill.type[i] === 'gradient')
       ) {
         // a small adjustment to allow gradient line to draw correctly for all same values
-        /* #fix https://github.com/apexcharts/apexcharts.js/issues/358 */
+        /* #fix https://github.com/mscharts/mscharts.js/issues/358 */
         if (coreUtils.seriesHaveSameValues(i)) {
           let gSeries = series[i].slice()
           gSeries[gSeries.length - 1] = gSeries[gSeries.length - 1] + 0.000001
@@ -123,18 +123,18 @@ class Line {
 
       // el to which series will be drawn
       let elSeries = graphics.group({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[realIndex])
       })
 
       // points
       let elPointsMain = graphics.group({
-        class: 'apexcharts-series-markers-wrap'
+        class: 'mscharts-series-markers-wrap'
       })
 
       // eldatalabels
       let elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-datalabels'
+        class: 'mscharts-datalabels'
       })
 
       this.ctx.series.addCollapsedClassToSeries(elSeries, realIndex)
@@ -379,7 +379,7 @@ class Line {
         animationDelay: i,
         initialSpeed: w.config.chart.animations.speed,
         dataChangeSpeed: w.config.chart.animations.dynamicAnimation.speed,
-        className: `apexcharts-${type}`
+        className: `mscharts-${type}`
       }
 
       if (type === 'area') {

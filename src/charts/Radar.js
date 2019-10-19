@@ -6,7 +6,7 @@ import Filters from '../modules/Filters'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Radar Class for Spider/Radar Charts.
+ * MSCharts Radar Class for Spider/Radar Charts.
  * @module Radar
  **/
 
@@ -85,7 +85,7 @@ class Radar {
     let translateY = halfH
 
     let ret = this.graphics.group({
-      class: 'apexcharts-radar-series',
+      class: 'mscharts-radar-series',
       'data:innerTranslateX': translateX,
       'data:innerTranslateY': translateY - 25,
       transform: `translate(${translateX || 0}, ${translateY || 0})`
@@ -95,13 +95,13 @@ class Radar {
     let elPointsMain = null
 
     this.yaxisLabels = this.graphics.group({
-      class: 'apexcharts-yaxis'
+      class: 'mscharts-yaxis'
     })
 
     series.forEach((s, i) => {
       // el to which series will be drawn
       let elSeries = this.graphics.group().attr({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[i]),
         rel: i + 1,
         'data:realIndex': i
@@ -128,7 +128,7 @@ class Radar {
 
       // points
       elPointsMain = this.graphics.group({
-        class: 'apexcharts-series-markers-wrap hidden'
+        class: 'mscharts-series-markers-wrap hidden'
       })
 
       w.globals.delayedElements.push({
@@ -142,7 +142,7 @@ class Radar {
         animationDelay: i,
         initialSpeed: w.config.chart.animations.speed,
         dataChangeSpeed: w.config.chart.animations.dynamicAnimation.speed,
-        className: `apexcharts-radar`,
+        className: `mscharts-radar`,
         shouldClipToGrid: false,
         bindEventsOnPaths: false,
         stroke: w.globals.stroke.colors[i],
@@ -199,7 +199,7 @@ class Radar {
       s.forEach((sj, j) => {
         let markers = new Markers(this.ctx)
 
-        let opts = markers.getMarkerConfig('apexcharts-marker', i, j)
+        let opts = markers.getMarkerConfig('mscharts-marker', i, j)
 
         let point = this.graphics.drawMarker(
           dataPointsPos[j].x,
@@ -213,7 +213,7 @@ class Radar {
         point.node.setAttribute('default-marker-size', opts.pSize)
 
         let elPointsWrap = this.graphics.group({
-          class: 'apexcharts-series-markers'
+          class: 'mscharts-series-markers'
         })
 
         if (elPointsWrap) {
@@ -345,7 +345,7 @@ class Radar {
 
     const dataLabelsConfig = w.config.dataLabels
     let elDataLabelsWrap = this.graphics.group({
-      class: 'apexcharts-datalabels'
+      class: 'mscharts-datalabels'
     })
 
     let polygonPos = this.getPolygonPos(this.size)

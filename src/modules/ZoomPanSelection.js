@@ -4,7 +4,7 @@ import Toolbar from './Toolbar'
 import Scales from './Scales'
 
 /**
- * ApexCharts Zoom Class for handling zooming and panning on axes based charts.
+ * MSCharts Zoom Class for handling zooming and panning on axes based charts.
  *
  * @module ZoomPanSelection
  **/
@@ -47,10 +47,10 @@ export default class ZoomPanSelection extends Toolbar {
 
     this.zoomRect = this.graphics.drawRect(0, 0, 0, 0)
     this.selectionRect = this.graphics.drawRect(0, 0, 0, 0)
-    this.gridRect = w.globals.dom.baseEl.querySelector('.apexcharts-grid')
+    this.gridRect = w.globals.dom.baseEl.querySelector('.mscharts-grid')
 
-    this.zoomRect.node.classList.add('apexcharts-zoom-rect')
-    this.selectionRect.node.classList.add('apexcharts-selection-rect')
+    this.zoomRect.node.classList.add('mscharts-zoom-rect')
+    this.selectionRect.node.classList.add('mscharts-selection-rect')
     w.globals.dom.elGraphical.add(this.zoomRect)
     w.globals.dom.elGraphical.add(this.selectionRect)
 
@@ -125,8 +125,8 @@ export default class ZoomPanSelection extends Toolbar {
     }
 
     const falsePositives =
-      e.target.classList.contains('apexcharts-selection-rect') ||
-      e.target.parentNode.classList.contains('apexcharts-toolbar')
+      e.target.classList.contains('mscharts-selection-rect') ||
+      e.target.parentNode.classList.contains('mscharts-toolbar')
 
     if (falsePositives) return
 

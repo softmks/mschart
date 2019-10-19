@@ -4,7 +4,7 @@ import Markers from '../../modules/Markers'
 import Utils from '../../utils/Utils'
 
 /**
- * ApexCharts Tooltip.Marker Class to draw texts on the tooltip.
+ * MSCharts Tooltip.Marker Class to draw texts on the tooltip.
  *
  * @module Tooltip.Marker
  **/
@@ -23,20 +23,20 @@ export default class Marker {
     let graphics = new Graphics(this.ctx)
     let marker = new Markers(this.ctx)
 
-    let elsSeries = w.globals.dom.baseEl.querySelectorAll('.apexcharts-series')
+    let elsSeries = w.globals.dom.baseEl.querySelectorAll('.mscharts-series')
 
     for (let i = 0; i < elsSeries.length; i++) {
       let seriesIndex = parseInt(elsSeries[i].getAttribute('data:realIndex'))
 
       let pointsMain = w.globals.dom.baseEl.querySelector(
-        `.apexcharts-series[data\\:realIndex='${seriesIndex}'] .apexcharts-series-markers-wrap`
+        `.mscharts-series[data\\:realIndex='${seriesIndex}'] .mscharts-series-markers-wrap`
       )
 
       if (pointsMain !== null) {
         // it can be null as we have tooltips in donut/bar charts
         let point
 
-        let PointClasses = `apexcharts-marker w${(Math.random() + 1)
+        let PointClasses = `mscharts-marker w${(Math.random() + 1)
           .toString(36)
           .substring(4)}`
         if (
@@ -54,7 +54,7 @@ export default class Marker {
         point.node.setAttribute('default-marker-size', 0)
 
         let elPointsG = document.createElementNS(w.globals.SVGNS, 'g')
-        elPointsG.classList.add('apexcharts-series-markers')
+        elPointsG.classList.add('mscharts-series-markers')
 
         elPointsG.appendChild(point.node)
         pointsMain.appendChild(elPointsG)
@@ -99,7 +99,7 @@ export default class Marker {
     let col = j
 
     let points = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-series:not(.apexcharts-series-collapsed) .apexcharts-marker'
+      '.mscharts-series:not(.mscharts-series-collapsed) .mscharts-marker'
     )
 
     let newSize = w.config.markers.hover.size
@@ -160,7 +160,7 @@ export default class Marker {
     let w = this.w
 
     let points = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-series:not(.apexcharts-series-collapsed) .apexcharts-marker'
+      '.mscharts-series:not(.mscharts-series-collapsed) .mscharts-marker'
     )
 
     for (let p = 0; p < points.length; p++) {

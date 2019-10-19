@@ -3,7 +3,7 @@ import Options from './settings/Options'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Annotations Class for drawing lines/rects on both xaxis and yaxis.
+ * MSCharts Annotations Class for drawing lines/rects on both xaxis and yaxis.
  *
  * @module Annotations
  **/
@@ -38,7 +38,7 @@ export default class Annotations {
       for (let i = 0; i < 3; i++) {
         w.globals.dom.elGraphical.add(annoArray[i])
         if (initialAnim && !w.globals.resized && !w.globals.dataChanged) {
-          // fixes apexcharts/apexcharts.js#685
+          // fixes mscharts/mscharts.js#685
           if (
             w.config.chart.type !== 'scatter' &&
             w.config.chart.type !== 'bubble'
@@ -60,7 +60,7 @@ export default class Annotations {
 
     let catIndex = w.globals.labels.indexOf(x)
     const xLabel = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-xaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
+      '.mscharts-xaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
     )
 
     if (xLabel) {
@@ -146,7 +146,7 @@ export default class Annotations {
       fontSize: anno.label.style.fontSize,
       fontFamily: anno.label.style.fontFamily,
       foreColor: anno.label.style.color,
-      cssClass: 'apexcharts-xaxis-annotation-label ' + anno.label.style.cssClass
+      cssClass: 'mscharts-xaxis-annotation-label ' + anno.label.style.cssClass
     })
 
     elText.attr({
@@ -163,7 +163,7 @@ export default class Annotations {
     let w = this.w
 
     let elg = this.graphics.group({
-      class: 'apexcharts-xaxis-annotations'
+      class: 'mscharts-xaxis-annotations'
     })
 
     w.config.annotations.xaxis.map((anno, index) => {
@@ -184,7 +184,7 @@ export default class Annotations {
     if (this.invertAxis) {
       let catIndex = w.globals.labels.indexOf(anno.y)
       const xLabel = w.globals.dom.baseEl.querySelector(
-        '.apexcharts-yaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
+        '.mscharts-yaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
       )
 
       if (xLabel) {
@@ -222,7 +222,7 @@ export default class Annotations {
       if (this.invertAxis) {
         let catIndex = w.globals.labels.indexOf(anno.y2)
         const xLabel = w.globals.dom.baseEl.querySelector(
-          '.apexcharts-yaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
+          '.mscharts-yaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
         )
 
         if (xLabel) {
@@ -276,7 +276,7 @@ export default class Annotations {
       fontSize: anno.label.style.fontSize,
       fontFamily: anno.label.style.fontFamily,
       foreColor: anno.label.style.color,
-      cssClass: 'apexcharts-yaxis-annotation-label ' + anno.label.style.cssClass
+      cssClass: 'mscharts-yaxis-annotation-label ' + anno.label.style.cssClass
     })
 
     elText.attr({
@@ -290,7 +290,7 @@ export default class Annotations {
     let w = this.w
 
     let elg = this.graphics.group({
-      class: 'apexcharts-yaxis-annotations'
+      class: 'mscharts-yaxis-annotations'
     })
 
     w.config.annotations.yaxis.map((anno, index) => {
@@ -303,7 +303,7 @@ export default class Annotations {
   clearAnnotations(ctx) {
     const w = ctx.w
     let annos = w.globals.dom.baseEl.querySelectorAll(
-      '.apexcharts-yaxis-annotations, .apexcharts-xaxis-annotations, .apexcharts-point-annotations'
+      '.mscharts-yaxis-annotations, .mscharts-xaxis-annotations, .mscharts-point-annotations'
     )
 
     annos = Utils.listToArray(annos)
@@ -331,7 +331,7 @@ export default class Annotations {
     if (typeof anno.x === 'string') {
       let catIndex = w.globals.labels.indexOf(anno.x)
       const xLabel = w.globals.dom.baseEl.querySelector(
-        '.apexcharts-xaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
+        '.mscharts-xaxis-texts-g text:nth-child(' + (catIndex + 1) + ')'
       )
 
       const xPos = parseFloat(xLabel.getAttribute('x'))
@@ -407,7 +407,7 @@ export default class Annotations {
       pointStrokeColor: anno.marker.strokeColor,
       shape: anno.marker.shape,
       radius: anno.marker.radius,
-      class: 'apexcharts-point-annotation-marker ' + anno.marker.cssClass
+      class: 'mscharts-point-annotation-marker ' + anno.marker.cssClass
     }
 
     let point = this.graphics.drawMarker(
@@ -428,7 +428,7 @@ export default class Annotations {
       fontSize: anno.label.style.fontSize,
       fontFamily: anno.label.style.fontFamily,
       foreColor: anno.label.style.color,
-      cssClass: 'apexcharts-point-annotation-label ' + anno.label.style.cssClass
+      cssClass: 'mscharts-point-annotation-label ' + anno.label.style.cssClass
     })
 
     elText.attr({
@@ -440,7 +440,7 @@ export default class Annotations {
     if (anno.customSVG.SVG) {
       let g = this.graphics.group({
         class:
-          'apexcharts-point-annotations-custom-svg ' + anno.customSVG.cssClass
+          'mscharts-point-annotations-custom-svg ' + anno.customSVG.cssClass
       })
 
       g.attr({
@@ -457,7 +457,7 @@ export default class Annotations {
     let w = this.w
 
     let elg = this.graphics.group({
-      class: 'apexcharts-point-annotations'
+      class: 'mscharts-point-annotations'
     })
 
     w.config.annotations.points.map((anno, index) => {
@@ -473,7 +473,7 @@ export default class Annotations {
     if (anno.label.orientation === 'vertical') {
       const i = annoIndex !== null ? annoIndex : 0
       let xAnno = w.globals.dom.baseEl.querySelector(
-        `.apexcharts-xaxis-annotations .apexcharts-xaxis-annotation-label[rel='${i}']`
+        `.mscharts-xaxis-annotations .mscharts-xaxis-annotation-label[rel='${i}']`
       )
 
       if (xAnno !== null) {
@@ -511,7 +511,7 @@ export default class Annotations {
       return null
 
     const elGridRect = w.globals.dom.baseEl
-      .querySelector('.apexcharts-grid')
+      .querySelector('.mscharts-grid')
       .getBoundingClientRect()
 
     const coords = annoEl.getBoundingClientRect()
@@ -551,7 +551,7 @@ export default class Annotations {
 
     const add = (anno, i, type) => {
       let annoLabel = w.globals.dom.baseEl.querySelector(
-        `.apexcharts-${type}-annotations .apexcharts-${type}-annotation-label[rel='${i}']`
+        `.mscharts-${type}-annotations .mscharts-${type}-annotation-label[rel='${i}']`
       )
 
       if (annoLabel) {
@@ -583,7 +583,7 @@ export default class Annotations {
       y,
       text,
       textAnchor,
-      appendTo = '.apexcharts-inner',
+      appendTo = '.mscharts-inner',
       foreColor,
       fontSize,
       fontFamily,
@@ -612,7 +612,7 @@ export default class Annotations {
       fontSize: fontSize || '12px',
       fontFamily: fontFamily || w.config.chart.fontFamily,
       foreColor: foreColor || w.config.chart.foreColor,
-      cssClass: 'apexcharts-text ' + cssClass ? cssClass : ''
+      cssClass: 'mscharts-text ' + cssClass ? cssClass : ''
     })
 
     parentNode.appendChild(elText.node)
@@ -713,7 +713,7 @@ export default class Annotations {
     const me = context
     const w = me.w
     const parent = w.globals.dom.baseEl.querySelector(
-      `.apexcharts-${type}-annotations`
+      `.mscharts-${type}-annotations`
     )
     const index = parent.childNodes.length + 1
 
@@ -743,7 +743,7 @@ export default class Annotations {
 
     // add background
     let axesAnnoLabel = w.globals.dom.baseEl.querySelector(
-      `.apexcharts-${type}-annotations .apexcharts-${type}-annotation-label[rel='${index}']`
+      `.mscharts-${type}-annotations .mscharts-${type}-annotation-label[rel='${index}']`
     )
     const elRect = this.addBackgroundToAnno(axesAnnoLabel, anno)
     if (elRect) {

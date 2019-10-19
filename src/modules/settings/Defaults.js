@@ -2,7 +2,7 @@ import Utils from '../../utils/Utils'
 import DateTime from '../../utils/DateTime'
 
 /**
- * ApexCharts Default Class for setting default options for all chart types.
+ * MSCharts Default Class for setting default options for all chart types.
  *
  * @module Defaults
  **/
@@ -158,7 +158,7 @@ export default class Defaults {
           const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
           const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
           return (
-            '<div class="apexcharts-tooltip-candlestick">' +
+            '<div class="mscharts-tooltip-candlestick">' +
             '<div>Open: <span class="value">' +
             o +
             '</span></div>' +
@@ -251,7 +251,7 @@ export default class Defaults {
           const ylabel = w.globals.labels[dataPointIndex]
 
           return (
-            '<div class="apexcharts-tooltip-rangebar">' +
+            '<div class="mscharts-tooltip-rangebar">' +
             '<div> <span class="series-name" style="color: ' +
             color +
             '">' +
@@ -377,7 +377,7 @@ export default class Defaults {
       }
     opts.chart = opts.chart || {}
     opts.chart.zoom =
-      opts.chart.zoom || (window.Apex.chart && window.Apex.chart.zoom) || {}
+      opts.chart.zoom || (window.MS.chart && window.MS.chart.zoom) || {}
     const defaultFormatter = opts.xaxis.labels.formatter
     const labels =
       opts.xaxis.categories && opts.xaxis.categories.length

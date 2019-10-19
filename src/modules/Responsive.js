@@ -3,7 +3,7 @@ import Utils from '../utils/Utils'
 import CoreUtils from './CoreUtils'
 
 /**
- * ApexCharts Responsive Class to override options for different screen sizes.
+ * MSCharts Responsive Class to override options for different screen sizes.
  *
  * @module Responsive
  **/

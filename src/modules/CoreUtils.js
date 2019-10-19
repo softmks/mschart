@@ -1,5 +1,5 @@
 /*
- ** Util functions which are dependent on ApexCharts instance
+ ** Util functions which are dependent on MSCharts instance
  */
 
 class CoreUtils {

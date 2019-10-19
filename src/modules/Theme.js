@@ -1,7 +1,7 @@
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Theme Class for setting the colors and palettes.
+ * MSCharts Theme Class for setting the colors and palettes.
  *
  * @module Theme
  **/

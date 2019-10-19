@@ -4,7 +4,7 @@ import CoreUtils from '../CoreUtils'
 import Options from './Options'
 
 /**
- * ApexCharts Config Class for extending user options with pre-defined ApexCharts config.
+ * MSCharts Config Class for extending user options with pre-defined MSCharts config.
  *
  * @module Config
  **/
@@ -95,10 +95,10 @@ export default class Config {
       }
 
       // If user has specified a dark theme, make the tooltip dark too
-      this.checkForDarkTheme(window.Apex) // check global window Apex options
+      this.checkForDarkTheme(window.MS) // check global window MS options
       this.checkForDarkTheme(opts) // check locally passed options
 
-      opts.xaxis = opts.xaxis || window.Apex.xaxis || {}
+      opts.xaxis = opts.xaxis || window.MS.xaxis || {}
 
       const combo = CoreUtils.checkComboSeries(opts.series)
       if (
@@ -113,9 +113,9 @@ export default class Config {
       }
       if (
         (opts.chart.sparkline && opts.chart.sparkline.enabled) ||
-        (window.Apex.chart &&
-          window.Apex.chart.sparkline &&
-          window.Apex.chart.sparkline.enabled)
+        (window.MS.chart &&
+          window.MS.chart.sparkline &&
+          window.MS.chart.sparkline.enabled)
       ) {
         chartDefaults = defaults.sparkline(chartDefaults)
       }
@@ -123,10 +123,10 @@ export default class Config {
     }
 
     // config should cascade in this fashion
-    // default-config < global-apex-variable-config < user-defined-config
+    // default-config < global-ms-variable-config < user-defined-config
 
     // get GLOBALLY defined options and merge with the default config
-    let mergedWithDefaultConfig = Utils.extend(newDefaults, window.Apex)
+    let mergedWithDefaultConfig = Utils.extend(newDefaults, window.MS)
 
     // get the merged config and extend with user defined config
     config = Utils.extend(mergedWithDefaultConfig, opts)
@@ -146,10 +146,10 @@ export default class Config {
     // extend global yaxis config (only if object is provided / not an array)
     if (
       opts.yaxis.constructor !== Array &&
-      window.Apex.yaxis &&
-      window.Apex.yaxis.constructor !== Array
+      window.MS.yaxis &&
+      window.MS.yaxis.constructor !== Array
     ) {
-      opts.yaxis = Utils.extend(opts.yaxis, window.Apex.yaxis)
+      opts.yaxis = Utils.extend(opts.yaxis, window.MS.yaxis)
     }
 
     // as we can't extend nested object's array with extend, we need to do it first

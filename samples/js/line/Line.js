@@ -118,10 +118,10 @@ function basicLineChart(){
         tickAmount: 2
     }
     }
-
+    console.log(options);
     var chart = new MSCharts(
     document.querySelector("#chart-line"),
-    options
+       options
     );
 
     chart.render();
@@ -372,7 +372,7 @@ function lineWithAnnotations(){
               fillColor: '#fff',
               strokeColor: 'red',
               radius: 2,
-              cssClass: 'apexcharts-custom-class'
+              cssClass: 'mscharts-custom-class'
             },
             label: {
               borderColor: '#FF4560',
@@ -939,7 +939,7 @@ function stepline(){
     chart.render();
 }
 function synchingCharts(){
-    Apex = {
+    MS = {
         chart: {
           height: 100,
         },

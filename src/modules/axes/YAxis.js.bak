@@ -3,7 +3,7 @@ import Utils from '../../utils/Utils'
 import AxesUtils from './AxesUtils'
 
 /**
- * ApexCharts YAxis Class for drawing Y-Axis.
+ * MSCharts YAxis Class for drawing Y-Axis.
  *
  * @module YAxis
  **/
@@ -35,7 +35,7 @@ export default class YAxis {
     let yaxisFontFamily = w.config.yaxis[realIndex].labels.style.fontFamily
 
     let elYaxis = graphics.group({
-      class: 'apexcharts-yaxis',
+      class: 'mscharts-yaxis',
       rel: realIndex,
       transform: 'translate(' + w.globals.translateYAxisX[realIndex] + ', 0)'
     })
@@ -45,7 +45,7 @@ export default class YAxis {
     }
 
     let elYaxisTexts = graphics.group({
-      class: 'apexcharts-yaxis-texts-g'
+      class: 'mscharts-yaxis-texts-g'
     })
 
     elYaxis.add(elYaxisTexts)
@@ -84,7 +84,7 @@ export default class YAxis {
           fontFamily: yaxisFontFamily,
           foreColor: w.config.yaxis[realIndex].labels.style.color,
           cssClass:
-            'apexcharts-yaxis-label ' +
+            'mscharts-yaxis-label ' +
             w.config.yaxis[realIndex].labels.style.cssClass
         })
         elYaxisTexts.add(label)
@@ -102,7 +102,7 @@ export default class YAxis {
 
     if (w.config.yaxis[realIndex].title.text !== undefined) {
       let elYaxisTitle = graphics.group({
-        class: 'apexcharts-yaxis-title'
+        class: 'mscharts-yaxis-title'
       })
 
       let x = 0
@@ -118,7 +118,7 @@ export default class YAxis {
         fontSize: w.config.yaxis[realIndex].title.style.fontSize,
         fontFamily: w.config.yaxis[realIndex].title.style.fontFamily,
         cssClass:
-          'apexcharts-yaxis-title-text ' +
+          'mscharts-yaxis-title-text ' +
           w.config.yaxis[realIndex].title.style.cssClass
       })
 
@@ -164,11 +164,11 @@ export default class YAxis {
     let graphics = new Graphics(this.ctx)
 
     let elXaxis = graphics.group({
-      class: 'apexcharts-xaxis apexcharts-yaxis-inversed'
+      class: 'mscharts-xaxis mscharts-yaxis-inversed'
     })
 
     let elXaxisTexts = graphics.group({
-      class: 'apexcharts-xaxis-texts-g',
+      class: 'mscharts-xaxis-texts-g',
       transform: `translate(${w.globals.translateXAxisX}, ${w.globals.translateXAxisY})`
     })
 
@@ -237,7 +237,7 @@ export default class YAxis {
           fontSize: this.xaxisFontSize,
           fontFamily: this.xaxisFontFamily,
           cssClass:
-            'apexcharts-xaxis-label ' + w.config.xaxis.labels.style.cssClass
+            'mscharts-xaxis-label ' + w.config.xaxis.labels.style.cssClass
         })
 
         elXaxisTexts.add(elTick)
@@ -254,7 +254,7 @@ export default class YAxis {
 
     if (w.config.xaxis.title.text !== undefined) {
       let elYaxisTitle = graphics.group({
-        class: 'apexcharts-xaxis-title apexcharts-yaxis-title-inversed'
+        class: 'mscharts-xaxis-title mscharts-yaxis-title-inversed'
       })
 
       let elYAxisTitleText = graphics.drawText({
@@ -269,7 +269,7 @@ export default class YAxis {
         fontSize: w.config.xaxis.title.style.fontSize,
         fontFamily: w.config.xaxis.title.style.fontFamily,
         cssClass:
-          'apexcharts-xaxis-title-text ' + w.config.xaxis.title.style.cssClass
+          'mscharts-xaxis-title-text ' + w.config.xaxis.title.style.cssClass
       })
 
       elYaxisTitle.add(elYAxisTitleText)
@@ -308,7 +308,7 @@ export default class YAxis {
     }
 
     let elYAxisLabelsWrap = w.globals.dom.baseEl.querySelector(
-      ` .apexcharts-yaxis[rel='${realIndex}'] .apexcharts-yaxis-texts-g`
+      ` .mscharts-yaxis[rel='${realIndex}'] .mscharts-yaxis-texts-g`
     )
 
     if (elYAxisLabelsWrap !== null) {
@@ -316,7 +316,7 @@ export default class YAxis {
     }
 
     let yAxisTitle = w.globals.dom.baseEl.querySelector(
-      `.apexcharts-yaxis[rel='${realIndex}'] .apexcharts-yaxis-title text`
+      `.mscharts-yaxis[rel='${realIndex}'] .mscharts-yaxis-title text`
     )
 
     if (yAxisTitle !== null) {
@@ -451,17 +451,17 @@ export default class YAxis {
   setYAxisTextAlignments() {
     const w = this.w
 
-    let yaxis = w.globals.dom.baseEl.querySelectorAll(`.apexcharts-yaxis`)
+    let yaxis = w.globals.dom.baseEl.querySelectorAll(`.mscharts-yaxis`)
     yaxis = Utils.listToArray(yaxis)
     yaxis.forEach((y, index) => {
       const yaxe = w.config.yaxis[index]
       // proceed only if user has specified alignment
       if (yaxe.labels.align !== undefined) {
         const yAxisInner = w.globals.dom.baseEl.querySelector(
-          `.apexcharts-yaxis[rel='${index}'] .apexcharts-yaxis-texts-g`
+          `.mscharts-yaxis[rel='${index}'] .mscharts-yaxis-texts-g`
         )
         let yAxisTexts = w.globals.dom.baseEl.querySelectorAll(
-          `.apexcharts-yaxis[rel='${index}'] .apexcharts-yaxis-label`
+          `.mscharts-yaxis[rel='${index}'] .mscharts-yaxis-label`
         )
 
         yAxisTexts = Utils.listToArray(yAxisTexts)

@@ -3,7 +3,7 @@ import Filters from './Filters'
 import Animations from './Animations'
 
 /**
- * ApexCharts Graphics Class for all drawing operations.
+ * MSCharts Graphics Class for all drawing operations.
  *
  * @module Graphics
  **/
@@ -486,7 +486,7 @@ class Graphics {
       'font-family': fontFamily,
       'font-weight': fontWeight,
       fill: foreColor,
-      class: 'apexcharts-text ' + opts.cssClass ? opts.cssClass : ''
+      class: 'mscharts-text ' + opts.cssClass ? opts.cssClass : ''
     })
 
     elText.node.style.fontFamily = fontFamily
@@ -648,10 +648,10 @@ class Graphics {
         w.globals.selectedDataPoints.length > 0
       ) {
         w.globals.selectedDataPoints = []
-        const elPaths = w.globals.dom.Paper.select('.apexcharts-series path')
+        const elPaths = w.globals.dom.Paper.select('.mscharts-series path')
           .members
         const elCircles = w.globals.dom.Paper.select(
-          '.apexcharts-series circle, .apexcharts-series rect'
+          '.mscharts-series circle, .mscharts-series rect'
         ).members
 
         elPaths.forEach((elPath) => {

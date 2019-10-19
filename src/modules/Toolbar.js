@@ -11,7 +11,7 @@ import icoSelect from './../assets/ico-select.svg'
 import icoMenu from './../assets/ico-menu.svg'
 
 /**
- * ApexCharts Toolbar Class for creating toolbar in axis based charts.
+ * MSCharts Toolbar Class for creating toolbar in axis based charts.
  *
  * @module Toolbar
  **/
@@ -29,7 +29,7 @@ export default class Toolbar {
   createToolbar() {
     let w = this.w
     const elToolbarWrap = document.createElement('div')
-    elToolbarWrap.setAttribute('class', 'apexcharts-toolbar')
+    elToolbarWrap.setAttribute('class', 'mscharts-toolbar')
     w.globals.dom.elWrap.appendChild(elToolbarWrap)
 
     this.elZoom = document.createElement('div')
@@ -59,7 +59,7 @@ export default class Toolbar {
         el: this.elZoomIn,
         icon: typeof this.t.zoomin === 'string' ? this.t.zoomin : icoZoomIn,
         title: this.localeValues.zoomIn,
-        class: 'apexcharts-zoom-in-icon'
+        class: 'mscharts-zoom-in-icon'
       })
     }
 
@@ -68,7 +68,7 @@ export default class Toolbar {
         el: this.elZoomOut,
         icon: typeof this.t.zoomout === 'string' ? this.t.zoomout : icoZoomOut,
         title: this.localeValues.zoomOut,
-        class: 'apexcharts-zoom-out-icon'
+        class: 'mscharts-zoom-out-icon'
       })
     }
 
@@ -77,7 +77,7 @@ export default class Toolbar {
         el: this.elZoom,
         icon: typeof this.t.zoom === 'string' ? this.t.zoom : icoZoom,
         title: this.localeValues.selectionZoom,
-        class: w.globals.isTouchDevice ? 'hidden' : 'apexcharts-zoom-icon'
+        class: w.globals.isTouchDevice ? 'hidden' : 'mscharts-zoom-icon'
       })
     }
 
@@ -87,7 +87,7 @@ export default class Toolbar {
         icon:
           typeof this.t.selection === 'string' ? this.t.selection : icoSelect,
         title: this.localeValues.selection,
-        class: w.globals.isTouchDevice ? 'hidden' : 'apexcharts-selection-icon'
+        class: w.globals.isTouchDevice ? 'hidden' : 'mscharts-selection-icon'
       })
     }
 
@@ -96,7 +96,7 @@ export default class Toolbar {
         el: this.elPan,
         icon: typeof this.t.pan === 'string' ? this.t.pan : icoPan,
         title: this.localeValues.pan,
-        class: w.globals.isTouchDevice ? 'hidden' : 'apexcharts-pan-icon'
+        class: w.globals.isTouchDevice ? 'hidden' : 'mscharts-pan-icon'
       })
     }
 
@@ -105,7 +105,7 @@ export default class Toolbar {
         el: this.elZoomReset,
         icon: typeof this.t.reset === 'string' ? this.t.reset : icoReset,
         title: this.localeValues.reset,
-        class: 'apexcharts-reset-zoom-icon'
+        class: 'mscharts-reset-zoom-icon'
       })
     }
     if (this.t.download) {
@@ -113,7 +113,7 @@ export default class Toolbar {
         el: this.elMenuIcon,
         icon: typeof this.t.download === 'string' ? this.t.download : icoMenu,
         title: this.localeValues.menu,
-        class: 'apexcharts-menu-icon'
+        class: 'mscharts-menu-icon'
       })
     }
 
@@ -123,7 +123,7 @@ export default class Toolbar {
         icon: this.t.customIcons[i].icon,
         title: this.t.customIcons[i].title,
         index: this.t.customIcons[i].index,
-        class: 'apexcharts-toolbar-custom-icon ' + this.t.customIcons[i].class
+        class: 'mscharts-toolbar-custom-icon ' + this.t.customIcons[i].class
       })
     }
 
@@ -146,7 +146,7 @@ export default class Toolbar {
     elToolbarWrap.appendChild(this.elMenu)
 
     Graphics.setAttrs(this.elMenu, {
-      class: 'apexcharts-menu'
+      class: 'mscharts-menu'
     })
 
     const menuItems = [
@@ -163,7 +163,7 @@ export default class Toolbar {
       this.elMenuItems.push(document.createElement('div'))
       this.elMenuItems[i].innerHTML = menuItems[i].title
       Graphics.setAttrs(this.elMenuItems[i], {
-        class: `apexcharts-menu-item ${menuItems[i].name}`,
+        class: `mscharts-menu-item ${menuItems[i].name}`,
         title: menuItems[i].title
       })
       this.elMenu.appendChild(this.elMenuItems[i])
@@ -228,14 +228,14 @@ export default class Toolbar {
   getToolbarIconsReference() {
     const w = this.w
     if (!this.elZoom) {
-      this.elZoom = w.globals.dom.baseEl.querySelector('.apexcharts-zoom-icon')
+      this.elZoom = w.globals.dom.baseEl.querySelector('.mscharts-zoom-icon')
     }
     if (!this.elPan) {
-      this.elPan = w.globals.dom.baseEl.querySelector('.apexcharts-pan-icon')
+      this.elPan = w.globals.dom.baseEl.querySelector('.mscharts-pan-icon')
     }
     if (!this.elSelection) {
       this.elSelection = w.globals.dom.baseEl.querySelector(
-        '.apexcharts-selection-icon'
+        '.mscharts-selection-icon'
       )
     }
   }

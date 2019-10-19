@@ -5,7 +5,7 @@ import Graphics from '../modules/Graphics'
 import Filters from '../modules/Filters'
 
 /**
- * ApexCharts Radial Class for drawing Circle / Semi Circle Charts.
+ * MSCharts Radial Class for drawing Circle / Semi Circle Charts.
  * @module Radial
  **/
 
@@ -45,7 +45,7 @@ class Radial extends Pie {
     const graphics = new Graphics(this.ctx)
 
     let ret = graphics.group({
-      class: 'apexcharts-radialbar'
+      class: 'mscharts-radialbar'
     })
 
     if (w.globals.noData) return ret
@@ -124,7 +124,7 @@ class Radial extends Pie {
     const graphics = new Graphics(this.ctx)
 
     let g = graphics.group({
-      class: 'apexcharts-tracks'
+      class: 'mscharts-tracks'
     })
 
     let filters = new Filters(this.ctx)
@@ -136,7 +136,7 @@ class Radial extends Pie {
 
     for (let i = 0; i < opts.series.length; i++) {
       let elRadialBarTrack = graphics.group({
-        class: 'apexcharts-radialbar-track apexcharts-track'
+        class: 'mscharts-radialbar-track mscharts-track'
       })
       g.add(elRadialBarTrack)
 
@@ -168,7 +168,7 @@ class Radial extends Pie {
         strokeWidth: (strokeWidth * parseInt(trackConfig.strokeWidth)) / 100,
         fill: 'none',
         strokeOpacity: trackConfig.opacity,
-        classes: 'apexcharts-radialbar-area'
+        classes: 'mscharts-radialbar-area'
       })
 
       if (trackConfig.dropShadow.enabled) {
@@ -178,7 +178,7 @@ class Radial extends Pie {
 
       elRadialBarTrack.add(elPath)
 
-      elPath.attr('id', 'apexcharts-radialbarTrack-' + i)
+      elPath.attr('id', 'mscharts-radialbarTrack-' + i)
 
       this.animatePaths(elPath, {
         centerX: opts.centerX,
@@ -272,7 +272,7 @@ class Radial extends Pie {
       reverseLoop ? i-- : i++
     ) {
       let elRadialBarArc = graphics.group({
-        class: `apexcharts-series apexcharts-radial-series`,
+        class: `mscharts-series mscharts-radial-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[i])
       })
       g.add(elRadialBarArc)
@@ -337,7 +337,7 @@ class Radial extends Pie {
         strokeWidth,
         fill: 'none',
         fillOpacity: w.config.fill.opacity,
-        classes: 'apexcharts-radialbar-area apexcharts-radialbar-slice-' + i,
+        classes: 'mscharts-radialbar-area mscharts-radialbar-slice-' + i,
         strokeDashArray: dashArray
       })
 
@@ -407,7 +407,7 @@ class Radial extends Pie {
     let circle = graphics.drawCircle(opts.size * 2)
 
     circle.attr({
-      class: 'apexcharts-radialbar-hollow',
+      class: 'mscharts-radialbar-hollow',
       cx: opts.centerX,
       cy: opts.centerY,
       r: opts.size,

@@ -59,7 +59,7 @@ export default class Range {
         w.config.series[index].type === 'candlestick' ||
         w.globals.isRangeData)
     ) {
-      /* fix https://github.com/apexcharts/apexcharts.js/issues/430 */
+      /* fix https://github.com/mscharts/mscharts.js/issues/430 */
       yMax = yMax * 1.01
     }
 
@@ -224,7 +224,7 @@ export default class Range {
         gl.allSeriesCollapsed = false
 
         if ((y.min !== undefined || y.max !== undefined) && !y.forceNiceScale) {
-          // fix https://github.com/apexcharts/apexcharts.js/issues/492
+          // fix https://github.com/mscharts/mscharts.js/issues/492
           gl.yAxisScale[index] = this.linearScale(minY, maxY, y.tickAmount)
         } else {
           let diff = Math.abs(maxY - minY)
@@ -234,7 +234,7 @@ export default class Range {
             maxY,
             diff,
             index,
-            // fix https://github.com/apexcharts/apexcharts.js/issues/397
+            // fix https://github.com/mscharts/mscharts.js/issues/397
             y.tickAmount ? y.tickAmount : diff < 5 && diff > 1 ? diff + 1 : 5
           )
         }
@@ -434,7 +434,7 @@ export default class Range {
 
     if (w.globals.isMultipleYAxis || w.globals.collapsedSeries.length) {
       // The autoScale option for multiple y-axis is turned off as it leads to buggy behavior.
-      // Also, when a series is collapsed, it results in incorrect behavior. Hence turned it off for that too - fixes apexcharts.js#795
+      // Also, when a series is collapsed, it results in incorrect behavior. Hence turned it off for that too - fixes mscharts.js#795
       return yaxis
     }
 

@@ -6,7 +6,7 @@ import Graphics from '../modules/Graphics'
 import DataLabels from '../modules/DataLabels'
 
 /**
- * ApexCharts Bar Class responsible for drawing both Columns and Bars.
+ * MSCharts Bar Class responsible for drawing both Columns and Bars.
  *
  * @module Bar
  **/
@@ -55,7 +55,7 @@ class Bar {
     this.initVariables(series)
 
     let ret = graphics.group({
-      class: 'apexcharts-bar-series apexcharts-plot-series'
+      class: 'mscharts-bar-series mscharts-plot-series'
     })
 
     if (w.config.dataLabels.enabled) {
@@ -82,7 +82,7 @@ class Bar {
 
       // el to which series will be drawn
       let elSeries = graphics.group({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         rel: i + 1,
         seriesName: Utils.escapeString(w.globals.seriesNames[realIndex]),
         'data:realIndex': realIndex
@@ -124,7 +124,7 @@ class Bar {
 
       // eldatalabels
       let elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-datalabels'
+        class: 'mscharts-datalabels'
       })
 
       for (
@@ -284,7 +284,7 @@ class Bar {
     const graphics = new Graphics(this.ctx)
 
     if (!lineFill) {
-      /* fix apexcharts#341 */
+      /* fix mscharts#341 */
       lineFill = this.barOptions.distributed
         ? w.globals.stroke.colors[j]
         : w.globals.stroke.colors[realIndex]
@@ -316,7 +316,7 @@ class Bar {
       animationDelay: delay,
       initialSpeed: w.config.chart.animations.speed,
       dataChangeSpeed: w.config.chart.animations.dynamicAnimation.speed,
-      className: `apexcharts-${type}-area`
+      className: `mscharts-${type}-area`
     })
 
     renderedPath.attr('clip-path', `url(#gridRectMask${w.globals.cuid})`)
@@ -535,7 +535,7 @@ class Bar {
         this.barOptions.colors.backgroundBarOpacity
       )
       elSeries.add(rect)
-      rect.node.classList.add('apexcharts-backgroundBar')
+      rect.node.classList.add('mscharts-backgroundBar')
     }
     return {
       pathTo,
@@ -642,7 +642,7 @@ class Bar {
         this.barOptions.colors.backgroundBarOpacity
       )
       elSeries.add(rect)
-      rect.node.classList.add('apexcharts-backgroundBar')
+      rect.node.classList.add('mscharts-backgroundBar')
     }
 
     return {
@@ -969,7 +969,7 @@ class Bar {
 
     if (dataLabelsConfig.enabled && !isSeriesNotCollapsed) {
       elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-data-labels'
+        class: 'mscharts-data-labels'
       })
 
       let text = ''

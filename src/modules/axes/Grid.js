@@ -5,7 +5,7 @@ import XAxis from './XAxis'
 import YAxis from './YAxis'
 
 /**
- * ApexCharts Grid Class for drawing Cartesian Grid.
+ * MSCharts Grid Class for drawing Cartesian Grid.
  *
  * @module Grid
  **/
@@ -38,7 +38,7 @@ class Grid {
 
     if (elGrid === null) {
       elGrid = graphics.group({
-        class: 'apexcharts-grid'
+        class: 'mscharts-grid'
       })
     }
 
@@ -159,13 +159,13 @@ class Grid {
     let strokeDashArray = w.config.grid.strokeDashArray
 
     let elg = graphics.group({
-      class: 'apexcharts-grid'
+      class: 'mscharts-grid'
     })
     let elgridLinesH = graphics.group({
-      class: 'apexcharts-gridlines-horizontal'
+      class: 'mscharts-gridlines-horizontal'
     })
     let elgridLinesV = graphics.group({
-      class: 'apexcharts-gridlines-vertical'
+      class: 'mscharts-gridlines-vertical'
     })
 
     elg.add(elgridLinesH)
@@ -208,7 +208,7 @@ class Grid {
                 w.config.grid.borderColor,
                 strokeDashArray
               )
-              line.node.classList.add('apexcharts-gridline')
+              line.node.classList.add('mscharts-gridline')
               elgridLinesV.add(line)
 
               if (this.animX) {
@@ -251,7 +251,7 @@ class Grid {
                 strokeDashArray
               )
 
-              line.node.classList.add('apexcharts-gridline')
+              line.node.classList.add('mscharts-gridline')
               elgridLinesV.add(line)
 
               if (this.animX) {
@@ -281,7 +281,7 @@ class Grid {
             strokeDashArray
           )
           elgridLinesH.add(line)
-          line.node.classList.add('apexcharts-gridline')
+          line.node.classList.add('mscharts-gridline')
 
           if (this.animY) {
             this.animateLine(line, { y1: y1 + 20, y2: y2 + 20 }, { y1: y1, y2 })
@@ -317,7 +317,7 @@ class Grid {
               strokeDashArray
             )
 
-            line.node.classList.add('apexcharts-gridline')
+            line.node.classList.add('mscharts-gridline')
             elgridLinesV.add(line)
 
             if (this.animX) {
@@ -347,7 +347,7 @@ class Grid {
             strokeDashArray
           )
           elgridLinesH.add(line)
-          line.node.classList.add('apexcharts-gridline')
+          line.node.classList.add('mscharts-gridline')
 
           if (this.animY) {
             this.animateLine(line, { y1: y1 + 20, y2: y2 + 20 }, { y1: y1, y2 })
@@ -395,7 +395,7 @@ class Grid {
           w.config.grid.row.opacity
         )
         elg.add(rect)
-        rect.node.classList.add('apexcharts-gridRow')
+        rect.node.classList.add('mscharts-gridRow')
 
         y1 = y1 + w.globals.gridHeight / tickAmount
       }
@@ -424,7 +424,7 @@ class Grid {
           color,
           w.config.grid.column.opacity
         )
-        rect.node.classList.add('apexcharts-gridColumn')
+        rect.node.classList.add('mscharts-gridColumn')
         elg.add(rect)
 
         x1 = x1 + w.globals.gridWidth / xCount

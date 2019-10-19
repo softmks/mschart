@@ -6,7 +6,7 @@ import Series from './Series'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Legend Class to draw legend.
+ * MSCharts Legend Class to draw legend.
  *
  * @module Legend
  **/
@@ -129,7 +129,7 @@ class Legend {
       }
 
       let elMarker = document.createElement('span')
-      elMarker.classList.add('apexcharts-legend-marker')
+      elMarker.classList.add('mscharts-legend-marker')
 
       let mOffsetX = w.config.legend.markers.offsetX
       let mOffsetY = w.config.legend.markers.offsetY
@@ -190,7 +190,7 @@ class Legend {
       let elLegend = document.createElement('div')
 
       let elLegendText = document.createElement('span')
-      elLegendText.classList.add('apexcharts-legend-text')
+      elLegendText.classList.add('mscharts-legend-text')
       elLegendText.innerHTML = text
 
       let textColor = w.config.legend.labels.useSeriesColors
@@ -227,7 +227,7 @@ class Legend {
           w.globals.collapsedSeriesIndices.indexOf(i) === -1 &&
           w.globals.ancillaryCollapsedSeriesIndices.indexOf(i) === -1
         ) {
-          elLegend.classList.add('apexcharts-hidden-zero-series')
+          elLegend.classList.add('mscharts-hidden-zero-series')
         }
       }
 
@@ -237,7 +237,7 @@ class Legend {
           w.globals.collapsedSeriesIndices.indexOf(i) === -1 &&
           w.globals.ancillaryCollapsedSeriesIndices.indexOf(i) === -1
         ) {
-          elLegend.classList.add('apexcharts-hidden-null-series')
+          elLegend.classList.add('mscharts-hidden-null-series')
         }
       }
 
@@ -248,7 +248,7 @@ class Legend {
         'position-' + w.config.legend.position
       )
 
-      elLegend.classList.add('apexcharts-legend-series')
+      elLegend.classList.add('mscharts-legend-series')
       elLegend.style.margin = `${w.config.legend.itemMargin.horizontal}px ${w.config.legend.itemMargin.vertical}px`
       w.globals.dom.elLegendWrap.style.width = w.config.legend.width
         ? w.config.legend.width + 'px'
@@ -294,9 +294,7 @@ class Legend {
 
   getLegendBBox() {
     const w = this.w
-    let currLegendsWrap = w.globals.dom.baseEl.querySelector(
-      '.apexcharts-legend'
-    )
+    let currLegendsWrap = w.globals.dom.baseEl.querySelector('.mscharts-legend')
     let currLegendsWrapRect = currLegendsWrap.getBoundingClientRect()
 
     let currLegendsWrapWidth = currLegendsWrapRect.width
@@ -311,7 +309,7 @@ class Legend {
   setLegendWrapXY(offsetX, offsetY) {
     let w = this.w
 
-    let elLegendWrap = w.globals.dom.baseEl.querySelector('.apexcharts-legend')
+    let elLegendWrap = w.globals.dom.baseEl.querySelector('.mscharts-legend')
 
     const legendRect = elLegendWrap.getBoundingClientRect()
 
@@ -359,7 +357,7 @@ class Legend {
   legendAlignHorizontal() {
     let w = this.w
 
-    let elLegendWrap = w.globals.dom.baseEl.querySelector('.apexcharts-legend')
+    let elLegendWrap = w.globals.dom.baseEl.querySelector('.mscharts-legend')
 
     elLegendWrap.style.right = 0
 
@@ -410,8 +408,8 @@ class Legend {
     const w = this.w
 
     const hoverOverLegend =
-      e.target.classList.contains('apexcharts-legend-text') ||
-      e.target.classList.contains('apexcharts-legend-marker')
+      e.target.classList.contains('mscharts-legend-text') ||
+      e.target.classList.contains('mscharts-legend-marker')
 
     if (w.config.chart.type !== 'heatmap') {
       if (!e.target.classList.contains('inactive-legend') && hoverOverLegend) {
@@ -432,8 +430,8 @@ class Legend {
 
   onLegendClick(e) {
     if (
-      e.target.classList.contains('apexcharts-legend-text') ||
-      e.target.classList.contains('apexcharts-legend-marker')
+      e.target.classList.contains('mscharts-legend-text') ||
+      e.target.classList.contains('mscharts-legend-marker')
     ) {
       let seriesCnt = parseInt(e.target.getAttribute('rel')) - 1
       let isHidden = e.target.getAttribute('data:collapsed') === 'true'
@@ -448,7 +446,7 @@ class Legend {
       const markerClick = this.w.config.legend.markers.onClick
       if (
         typeof markerClick === 'function' &&
-        e.target.classList.contains('apexcharts-legend-marker')
+        e.target.classList.contains('mscharts-legend-marker')
       ) {
         markerClick(this.ctx, seriesCnt, this.w)
         this.ctx.fireEvent('legendMarkerClick', [this.ctx, seriesCnt, this.w])
@@ -464,67 +462,67 @@ class Legend {
 
     const text = `
     
-      .apexcharts-legend {
+      .mscharts-legend {
         display: flex;
         overflow: auto;
         padding: 0 10px;
       }
 
-      .apexcharts-legend.position-bottom, .apexcharts-legend.position-top {
+      .mscharts-legend.position-bottom, .mscharts-legend.position-top {
         flex-wrap: wrap
       }
-      .apexcharts-legend.position-right, .apexcharts-legend.position-left {
+      .mscharts-legend.position-right, .mscharts-legend.position-left {
         flex-direction: column;
         bottom: 0;
       }
 
-      .apexcharts-legend.position-bottom.left, .apexcharts-legend.position-top.left, .apexcharts-legend.position-right, .apexcharts-legend.position-left {
+      .mscharts-legend.position-bottom.left, .mscharts-legend.position-top.left, .mscharts-legend.position-right, .mscharts-legend.position-left {
         justify-content: flex-start;
       }
 
-      .apexcharts-legend.position-bottom.center, .apexcharts-legend.position-top.center {
+      .mscharts-legend.position-bottom.center, .mscharts-legend.position-top.center {
         justify-content: center;  
       }
 
-      .apexcharts-legend.position-bottom.right, .apexcharts-legend.position-top.right {
+      .mscharts-legend.position-bottom.right, .mscharts-legend.position-top.right {
         justify-content: flex-end;
       }
 
-      .apexcharts-legend-series {
+      .mscharts-legend-series {
         cursor: pointer;
         line-height: normal;
       }
 
-      .apexcharts-legend.position-bottom .apexcharts-legend-series, .apexcharts-legend.position-top .apexcharts-legend-series{
+      .mscharts-legend.position-bottom .mscharts-legend-series, .mscharts-legend.position-top .mscharts-legend-series{
         display: flex;
         align-items: center;
       }
 
-      .apexcharts-legend-text {
+      .mscharts-legend-text {
         position: relative;
         font-size: 14px;
       }
 
-      .apexcharts-legend-text *, .apexcharts-legend-marker * {
+      .mscharts-legend-text *, .mscharts-legend-marker * {
         pointer-events: none;
       }
 
-      .apexcharts-legend-marker {
+      .mscharts-legend-marker {
         position: relative;
         display: inline-block;
         cursor: pointer;
         margin-right: 3px;
       }
       
-      .apexcharts-legend.right .apexcharts-legend-series, .apexcharts-legend.left .apexcharts-legend-series{
+      .mscharts-legend.right .mscharts-legend-series, .mscharts-legend.left .mscharts-legend-series{
         display: inline-block;
       }
 
-      .apexcharts-legend-series.no-click {
+      .mscharts-legend-series.no-click {
         cursor: auto;
       }
 
-      .apexcharts-legend .apexcharts-hidden-zero-series, .apexcharts-legend .apexcharts-hidden-null-series {
+      .mscharts-legend .mscharts-hidden-zero-series, .mscharts-legend .mscharts-hidden-null-series {
         display: none !important;
       }
 
@@ -553,12 +551,12 @@ class Legend {
 
       if (w.globals.axisCharts) {
         seriesEl = w.globals.dom.baseEl.querySelector(
-          `.apexcharts-series[data\\:realIndex='${seriesCnt}']`
+          `.mscharts-series[data\\:realIndex='${seriesCnt}']`
         )
         realIndex = parseInt(seriesEl.getAttribute('data:realIndex'))
       } else {
         seriesEl = w.globals.dom.baseEl.querySelector(
-          `.apexcharts-series[rel='${seriesCnt + 1}']`
+          `.mscharts-series[rel='${seriesCnt + 1}']`
         )
         realIndex = parseInt(seriesEl.getAttribute('rel')) - 1
       }
@@ -624,13 +622,13 @@ class Legend {
         for (let sc = 0; sc < seriesChildren.length; sc++) {
           if (
             seriesChildren[sc].classList.contains(
-              'apexcharts-series-markers-wrap'
+              'mscharts-series-markers-wrap'
             )
           ) {
-            if (seriesChildren[sc].classList.contains('apexcharts-hide')) {
-              seriesChildren[sc].classList.remove('apexcharts-hide')
+            if (seriesChildren[sc].classList.contains('mscharts-hide')) {
+              seriesChildren[sc].classList.remove('mscharts-hide')
             } else {
-              seriesChildren[sc].classList.add('apexcharts-hide')
+              seriesChildren[sc].classList.add('mscharts-hide')
             }
           }
         }
@@ -646,7 +644,7 @@ class Legend {
     } else {
       // for non-axis charts i.e pie / donuts
       let seriesEl = w.globals.dom.Paper.select(
-        ` .apexcharts-series[rel='${seriesCnt + 1}'] path`
+        ` .mscharts-series[rel='${seriesCnt + 1}'] path`
       )
 
       const type = w.config.chart.type

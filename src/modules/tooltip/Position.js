@@ -2,7 +2,7 @@ import Graphics from '../Graphics'
 import Series from '../Series'
 
 /**
- * ApexCharts Tooltip.Position Class to move the tooltip based on x and y position.
+ * MSCharts Tooltip.Position Class to move the tooltip based on x and y position.
  *
  * @module Tooltip.Position
  **/
@@ -140,7 +140,7 @@ export default class Position {
 
     if (ttCtx.yaxisTTEls === null) {
       ttCtx.yaxisTTEls = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-yaxistooltip'
+        '.mscharts-yaxistooltip'
       )
     }
 
@@ -244,7 +244,7 @@ export default class Position {
 
     if (w.globals.markers.size[i] > 0) {
       let allPoints = w.globals.dom.baseEl.querySelectorAll(
-        ` .apexcharts-series[data\\:realIndex='${i}'] .apexcharts-marker`
+        ` .mscharts-series[data\\:realIndex='${i}'] .mscharts-marker`
       )
       for (let p = 0; p < allPoints.length; p++) {
         if (parseInt(allPoints[p].getAttribute('rel')) === j) {
@@ -288,7 +288,7 @@ export default class Position {
     cy = pointsArr[capturedSeries][j][1] ? pointsArr[capturedSeries][j][1] : 0
 
     let point = w.globals.dom.baseEl.querySelector(
-      `.apexcharts-series[data\\:realIndex='${capturedSeries}'] .apexcharts-series-markers circle`
+      `.mscharts-series[data\\:realIndex='${capturedSeries}'] .mscharts-series-markers circle`
     )
 
     if (point) {
@@ -339,7 +339,7 @@ export default class Position {
       points = allPoints
     } else {
       points = w.globals.dom.baseEl.querySelectorAll(
-        '.apexcharts-series-markers circle'
+        '.mscharts-series-markers circle'
       )
     }
 
@@ -381,7 +381,7 @@ export default class Position {
     const i = w.globals.maxValsInArrayIndex + 1
 
     let jBar = w.globals.dom.baseEl.querySelector(
-      `.apexcharts-bar-series .apexcharts-series[rel='${i}'] path[j='${j}'], .apexcharts-candlestick-series .apexcharts-series[rel='${i}'] path[j='${j}'], .apexcharts-rangebar-series .apexcharts-series[rel='${i}'] path[j='${j}']`
+      `.mscharts-bar-series .mscharts-series[rel='${i}'] path[j='${j}'], .mscharts-candlestick-series .mscharts-series[rel='${i}'] path[j='${j}'], .mscharts-rangebar-series .mscharts-series[rel='${i}'] path[j='${j}']`
     )
 
     let bcx = jBar ? parseFloat(jBar.getAttribute('cx')) : 0

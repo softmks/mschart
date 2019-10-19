@@ -2,7 +2,7 @@ import Graphics from './Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts Fill Class for setting fill options of the paths.
+ * MSCharts Fill Class for setting fill options of the paths.
  *
  * @module Fill
  **/

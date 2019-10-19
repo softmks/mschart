@@ -3,7 +3,7 @@ import Graphics from './Graphics'
 import Filters from './Filters'
 
 /**
- * ApexCharts DataLabels Class for drawing dataLabels on Axes based Charts.
+ * MSCharts DataLabels Class for drawing dataLabels on Axes based Charts.
  *
  * @module DataLabels
  **/
@@ -93,7 +93,7 @@ class DataLabels {
     }
 
     elDataLabelsWrap = graphics.group({
-      class: 'apexcharts-data-labels'
+      class: 'mscharts-data-labels'
     })
 
     for (let q = 0; q < pos.x.length; q++) {
@@ -231,7 +231,7 @@ class DataLabels {
       })
 
       dataLabelText.attr({
-        class: 'apexcharts-datalabel',
+        class: 'mscharts-datalabel',
         cx: x,
         cy: y
       })

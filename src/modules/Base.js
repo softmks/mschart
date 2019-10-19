@@ -2,7 +2,7 @@ import Config from './settings/Config'
 import Globals from './settings/Globals'
 
 /**
- * ApexCharts Base Class for extending user options with pre-defined ApexCharts config.
+ * MSCharts Base Class for extending user options with pre-defined MSCharts config.
  *
  * @module Base
  **/

@@ -5,7 +5,7 @@ import Utils from '../utils/Utils'
 import Filters from '../modules/Filters'
 
 /**
- * ApexCharts HeatMap Class.
+ * MSCharts HeatMap Class.
  * @module HeatMap
  **/
 
@@ -30,7 +30,7 @@ export default class HeatMap {
     const graphics = new Graphics(this.ctx)
 
     let ret = graphics.group({
-      class: 'apexcharts-heatmap'
+      class: 'mscharts-heatmap'
     })
 
     ret.attr('clip-path', `url(#gridRectMask${w.globals.cuid})`)
@@ -57,7 +57,7 @@ export default class HeatMap {
     ) {
       // el to which series will be drawn
       let elSeries = graphics.group({
-        class: `apexcharts-series apexcharts-heatmap-series`,
+        class: `mscharts-series mscharts-heatmap-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[i]),
         rel: i + 1,
         'data:realIndex': i
@@ -118,7 +118,7 @@ export default class HeatMap {
           cy: y1
         })
 
-        rect.node.classList.add('apexcharts-heatmap-rect')
+        rect.node.classList.add('mscharts-heatmap-rect')
         elSeries.add(rect)
 
         rect.attr({
@@ -290,7 +290,7 @@ export default class HeatMap {
 
     if (dataLabelsConfig.enabled) {
       elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-data-labels'
+        class: 'mscharts-data-labels'
       })
 
       const offX = dataLabelsConfig.offsetX

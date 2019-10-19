@@ -5,7 +5,7 @@ import Graphics from '../modules/Graphics'
 import Utils from '../utils/Utils'
 
 /**
- * ApexCharts CandleStick Class responsible for drawing both Stacked Columns and Bars.
+ * MSCharts CandleStick Class responsible for drawing both Stacked Columns and Bars.
  *
  * @module CandleStick
  **/
@@ -26,7 +26,7 @@ class CandleStick extends Bar {
     this.initVariables(series)
 
     let ret = graphics.group({
-      class: 'apexcharts-candlestick-series apexcharts-plot-series'
+      class: 'mscharts-candlestick-series mscharts-plot-series'
     })
 
     for (let i = 0, bc = 0; i < series.length; i++, bc++) {
@@ -43,7 +43,7 @@ class CandleStick extends Bar {
 
       // el to which series will be drawn
       let elSeries = graphics.group({
-        class: `apexcharts-series`,
+        class: `mscharts-series`,
         seriesName: Utils.escapeString(w.globals.seriesNames[realIndex]),
         rel: i + 1,
         'data:realIndex': realIndex
@@ -75,7 +75,7 @@ class CandleStick extends Bar {
 
       // eldatalabels
       let elDataLabelsWrap = graphics.group({
-        class: 'apexcharts-datalabels'
+        class: 'mscharts-datalabels'
       })
 
       for (

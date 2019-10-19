@@ -2216,7 +2216,7 @@
         } catch (e) {
           if (element instanceof SVG.Shape) {
             if (!SVG.parser.draw) {
-              // fixes apexcharts/vue-apexcharts #14
+              // fixes mscharts/vue-mscharts #14
               SVG.prepare()
             }
             var clone = element.clone(SVG.parser.draw.instance).show()
