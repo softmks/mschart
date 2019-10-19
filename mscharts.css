@@ -1,0 +1,605 @@
+.mscharts-canvas {
+  position: relative;
+  user-select: none;
+  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */
+}
+
+/* scrollbar is not visible by default for legend, hence forcing the visibility */
+.mscharts-canvas ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+}
+.mscharts-canvas ::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0,0,0,.5);
+  box-shadow: 0 0 1px rgba(255,255,255,.5);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+.mscharts-canvas.dark {
+  background: #343F57;
+}
+
+.mscharts-inner {
+  position: relative;
+}
+
+.legend-mouseover-inactive {
+  transition: 0.15s ease all;
+  opacity: 0.20;
+}
+
+.mscharts-series-collapsed {
+  opacity: 0;
+}
+
+.mscharts-gridline, .mscharts-text {
+  pointer-events: none;
+}
+
+.mscharts-tooltip {
+  border-radius: 5px;
+  box-shadow: 2px 2px 6px -4px #999;
+  cursor: default;
+  font-size: 14px;
+  left: 62px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 12;
+  transition: 0.15s ease all;
+}
+.mscharts-tooltip.light {
+  border: 1px solid #e3e3e3;
+  background: rgba(255, 255, 255, 0.96);
+}
+.mscharts-tooltip.dark {
+  color: #fff;
+  background: rgba(30,30,30, 0.8);
+}
+.mscharts-tooltip * {
+  font-family: inherit;
+}
+
+.mscharts-tooltip .mscharts-marker,
+.mscharts-area-series .mscharts-area,
+.mscharts-line {
+  pointer-events: none;
+}
+
+.mscharts-tooltip.active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.mscharts-tooltip-title {
+  padding: 6px;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.mscharts-tooltip.light .mscharts-tooltip-title {
+  background: #ECEFF1;
+  border-bottom: 1px solid #ddd;
+}
+.mscharts-tooltip.dark .mscharts-tooltip-title {
+  background: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid #333;
+}
+
+.mscharts-tooltip-text-value,
+.mscharts-tooltip-text-z-value {
+  display: inline-block;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.mscharts-tooltip-text-z-label:empty,
+.mscharts-tooltip-text-z-value:empty {
+  display: none;
+}
+
+.mscharts-tooltip-text-value,
+.mscharts-tooltip-text-z-value {
+  font-weight: 600;
+}
+
+.mscharts-tooltip-marker {
+  width: 12px;
+  height: 12px;
+  position: relative;
+  top: 0px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.mscharts-tooltip-series-group {
+  padding: 0 10px;
+  display: none;
+  text-align: left;
+  justify-content: left;
+  align-items: center;
+}
+
+.mscharts-tooltip-series-group.active .mscharts-tooltip-marker {
+  opacity: 1;
+}
+.mscharts-tooltip-series-group.active, .mscharts-tooltip-series-group:last-child {
+  padding-bottom: 4px;
+}
+.mscharts-tooltip-series-group-hidden {
+  opacity: 0;
+  height: 0;
+  line-height: 0;
+  padding: 0 !important;
+}
+.mscharts-tooltip-y-group {
+  padding: 6px 0 5px;
+}
+.mscharts-tooltip-candlestick {
+  padding: 4px 8px;
+}
+.mscharts-tooltip-candlestick > div {
+  margin: 4px 0;
+}
+.mscharts-tooltip-candlestick span.value {
+  font-weight: bold;
+}
+
+.mscharts-tooltip-rangebar {
+  padding: 5px 8px;
+}
+
+.mscharts-tooltip-rangebar .category {
+  font-weight: 600;
+  color: #777;
+}
+
+.mscharts-tooltip-rangebar .series-name {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.mscharts-xaxistooltip {
+  opacity: 0;
+  padding: 9px 10px;
+  pointer-events: none;
+  color: #373d3f;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 10;
+  background: #ECEFF1;
+  border: 1px solid #90A4AE;
+  transition: 0.15s ease all;
+}
+
+.mscharts-xaxistooltip.dark {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.mscharts-xaxistooltip:after, .mscharts-xaxistooltip:before {
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.mscharts-xaxistooltip:after {
+  border-color: rgba(236, 239, 241, 0);
+  border-width: 6px;
+  margin-left: -6px;
+}
+.mscharts-xaxistooltip:before {
+  border-color: rgba(144, 164, 174, 0);
+  border-width: 7px;
+  margin-left: -7px;
+}
+
+.mscharts-xaxistooltip-bottom:after, .mscharts-xaxistooltip-bottom:before {
+  bottom: 100%;
+}
+
+.mscharts-xaxistooltip-top:after, .mscharts-xaxistooltip-top:before {
+  top: 100%;
+}
+
+.mscharts-xaxistooltip-bottom:after {
+  border-bottom-color: #ECEFF1;
+}
+.mscharts-xaxistooltip-bottom:before {
+  border-bottom-color: #90A4AE;
+}
+
+.mscharts-xaxistooltip-bottom.dark:after {
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+.mscharts-xaxistooltip-bottom.dark:before {
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+.mscharts-xaxistooltip-top:after {
+  border-top-color:#ECEFF1
+}
+.mscharts-xaxistooltip-top:before {
+  border-top-color: #90A4AE;
+}
+.mscharts-xaxistooltip-top.dark:after {
+  border-top-color:rgba(0, 0, 0, 0.5);
+}
+.mscharts-xaxistooltip-top.dark:before {
+  border-top-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.mscharts-xaxistooltip.active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.mscharts-yaxistooltip {
+  opacity: 0;
+  padding: 4px 10px;
+  pointer-events: none;
+  color: #373d3f;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 10;
+  background: #ECEFF1;
+  border: 1px solid #90A4AE;
+}
+
+.mscharts-yaxistooltip.dark {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.mscharts-yaxistooltip:after, .mscharts-yaxistooltip:before {
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.mscharts-yaxistooltip:after {
+  border-color: rgba(236, 239, 241, 0);
+  border-width: 6px;
+  margin-top: -6px;
+}
+.mscharts-yaxistooltip:before {
+  border-color: rgba(144, 164, 174, 0);
+  border-width: 7px;
+  margin-top: -7px;
+}
+
+.mscharts-yaxistooltip-left:after, .mscharts-yaxistooltip-left:before {
+  left: 100%;
+}
+
+.mscharts-yaxistooltip-right:after, .mscharts-yaxistooltip-right:before {
+  right: 100%;
+}
+
+.mscharts-yaxistooltip-left:after {
+  border-left-color: #ECEFF1;
+}
+.mscharts-yaxistooltip-left:before {
+  border-left-color: #90A4AE;
+}
+.mscharts-yaxistooltip-left.dark:after {
+  border-left-color: rgba(0, 0, 0, 0.5);
+}
+.mscharts-yaxistooltip-left.dark:before {
+  border-left-color: rgba(0, 0, 0, 0.5);
+}
+
+.mscharts-yaxistooltip-right:after {
+  border-right-color: #ECEFF1;
+}
+.mscharts-yaxistooltip-right:before {
+  border-right-color: #90A4AE;
+}
+.mscharts-yaxistooltip-right.dark:after {
+  border-right-color: rgba(0, 0, 0, 0.5);
+}
+.mscharts-yaxistooltip-right.dark:before {
+  border-right-color: rgba(0, 0, 0, 0.5);
+}
+
+.mscharts-yaxistooltip.active {
+  opacity: 1;
+}
+.mscharts-yaxistooltip-hidden {
+  display: none;
+}
+
+.mscharts-xcrosshairs, .mscharts-ycrosshairs {
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.15s ease all;
+}
+
+.mscharts-xcrosshairs.active, .mscharts-ycrosshairs.active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.mscharts-ycrosshairs-hidden {
+  opacity: 0;
+}
+
+.mscharts-zoom-rect {
+  pointer-events: none;
+}
+.mscharts-selection-rect {
+  cursor: move;
+}
+
+.svg_select_points, .svg_select_points_rot {
+  opacity: 0;
+  visibility: hidden;
+}
+.svg_select_points_l, .svg_select_points_r {
+  cursor: ew-resize;
+  opacity: 1;
+  visibility: visible;
+  fill: #888;
+}
+.mscharts-canvas.zoomable .hovering-zoom {
+  cursor: crosshair
+}
+.mscharts-canvas.zoomable .hovering-pan {
+  cursor: move
+}
+
+.mscharts-xaxis,
+.mscharts-yaxis {
+  pointer-events: none;
+}
+
+.mscharts-zoom-icon,
+.mscharts-zoom-in-icon,
+.mscharts-zoom-out-icon,
+.mscharts-reset-zoom-icon,
+.mscharts-pan-icon,
+.mscharts-selection-icon,
+.mscharts-menu-icon,
+.mscharts-toolbar-custom-icon {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  line-height: 24px;
+  color: #6E8192;
+  text-align: center;
+}
+
+
+.mscharts-zoom-icon svg,
+.mscharts-zoom-in-icon svg,
+.mscharts-zoom-out-icon svg,
+.mscharts-reset-zoom-icon svg,
+.mscharts-menu-icon svg {
+  fill: #6E8192;
+}
+.mscharts-selection-icon svg {
+  fill: #444;
+  transform: scale(0.76)
+}
+
+.dark .mscharts-zoom-icon svg,
+.dark .mscharts-zoom-in-icon svg,
+.dark .mscharts-zoom-out-icon svg,
+.dark .mscharts-reset-zoom-icon svg,
+.dark .mscharts-pan-icon svg,
+.dark .mscharts-selection-icon svg,
+.dark .mscharts-menu-icon svg,
+.dark .mscharts-toolbar-custom-icon svg{
+  fill: #f3f4f5;
+}
+
+.mscharts-canvas .mscharts-zoom-icon.selected svg,
+.mscharts-canvas .mscharts-selection-icon.selected svg,
+.mscharts-canvas .mscharts-reset-zoom-icon.selected svg {
+  fill: #008FFB;
+}
+.light .mscharts-selection-icon:not(.selected):hover svg,
+.light .mscharts-zoom-icon:not(.selected):hover svg,
+.light .mscharts-zoom-in-icon:hover svg,
+.light .mscharts-zoom-out-icon:hover svg,
+.light .mscharts-reset-zoom-icon:hover svg,
+.light .mscharts-menu-icon:hover svg {
+  fill: #333;
+}
+
+.mscharts-selection-icon, .mscharts-menu-icon {
+  position: relative;
+}
+.mscharts-reset-zoom-icon {
+  margin-left: 5px;
+}
+.mscharts-zoom-icon, .mscharts-reset-zoom-icon, .mscharts-menu-icon {
+  transform: scale(0.85);
+}
+
+.mscharts-zoom-in-icon, .mscharts-zoom-out-icon {
+  transform: scale(0.7)
+}
+
+.mscharts-zoom-out-icon {
+  margin-right: 3px;
+}
+
+.mscharts-pan-icon {
+  transform: scale(0.62);
+  position: relative;
+  left: 1px;
+  top: 0px;
+}
+.mscharts-pan-icon svg {
+  fill: #fff;
+  stroke: #6E8192;
+  stroke-width: 2;
+}
+.mscharts-pan-icon.selected svg {
+  stroke: #008FFB;
+}
+.mscharts-pan-icon:not(.selected):hover svg {
+  stroke: #333;
+}
+
+.mscharts-toolbar {
+  position: absolute;
+  z-index: 11;
+  top: 0px;
+  right: 3px;
+  max-width: 176px;
+  text-align: right;
+  border-radius: 3px;
+  padding: 0px 6px 2px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mscharts-toolbar svg {
+  pointer-events: none;
+}
+
+.mscharts-menu {
+  background: #fff;
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 3px;
+  right: 10px;
+  opacity: 0;
+  min-width: 110px;
+  transition: 0.15s ease all;
+  pointer-events: none;
+}
+
+.mscharts-menu.open {
+  opacity: 1;
+  pointer-events: all;
+  transition: 0.15s ease all;
+}
+
+.mscharts-menu-item {
+  padding: 6px 7px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.light .mscharts-menu-item:hover {
+  background: #eee;
+}
+.dark .mscharts-menu {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .mscharts-toolbar {
+    /*opacity: 0;*/
+  }
+
+  .mscharts-canvas:hover .mscharts-toolbar {
+    opacity: 1;
+  }
+}
+
+.mscharts-datalabel.hidden {
+  opacity: 0;
+}
+
+.mscharts-pie-label,
+.mscharts-datalabel, .mscharts-datalabel-label, .mscharts-datalabel-value {
+  cursor: default;
+  pointer-events: none;
+}
+
+.mscharts-pie-label-delay {
+  opacity: 0;
+  animation-name: opaque;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+.mscharts-canvas .hidden {
+  opacity: 0;
+}
+
+.mscharts-hide .mscharts-series-points {
+  opacity: 0;
+}
+
+.mscharts-area-series .mscharts-series-markers .mscharts-marker.no-pointer-events,
+.mscharts-line-series .mscharts-series-markers .mscharts-marker.no-pointer-events, .mscharts-radar-series path, .mscharts-radar-series polygon {
+  pointer-events: none;
+}
+
+/* markers */
+
+.mscharts-marker {
+  transition: 0.15s ease all;
+}
+
+@keyframes opaque {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Resize generated styles */
+@keyframes resizeanim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.resize-triggers {
+  animation: 1ms resizeanim;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.resize-triggers, .resize-triggers > div, .contract-trigger:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.resize-triggers > div {
+  background: #eee;
+  overflow: auto;
+}
+
+.contract-trigger:before {
+  width: 200%;
+  height: 200%;
+}
