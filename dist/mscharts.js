@@ -1,5 +1,5 @@
 /*!
- * MSCharts v0.0.2
+ * MSCharts v0.0.3
  * (c) 2018-2019 softmks
  * Released under the MIT License.
  */
@@ -965,7 +965,7 @@
           delayFactor = 0;
         }
 
-        me.morphSVG(el, j, pathFrom, pathTo, speed, strokeWidth, delay * delayFactor);
+        me.morphSVG(el, j, pathFrom, pathTo, speed, delay * delayFactor);
       }
     }, {
       key: "showDelayedElements",
@@ -977,18 +977,21 @@
       }
     }, {
       key: "animationCompleted",
-      value: function animationCompleted() {
+      value: function animationCompleted(el) {
         var w = this.w;
         w.globals.animationEnded = true;
 
         if (typeof w.config.chart.events.animationEnd === 'function') {
-          w.config.chart.events.animationEnd(this.ctx, w);
+          w.config.chart.events.animationEnd(this.ctx, {
+            el: el,
+            w: w
+          });
         }
       } // SVG.js animation for morphing one path to another
 
     }, {
       key: "morphSVG",
-      value: function morphSVG(el, j, pathFrom, pathTo, speed, strokeWidth, delay) {
+      value: function morphSVG(el, j, pathFrom, pathTo, speed, delay) {
         var _this = this;
 
         var w = this.w;
@@ -1019,10 +1022,10 @@
           // a flag to indicate that the original mount function can return true now as animation finished here
           if (Utils.isNumber(j)) {
             if (j === w.globals.series[w.globals.maxValsInArrayIndex].length - 2 && w.globals.shouldAnimate) {
-              _this.animationCompleted();
+              _this.animationCompleted(el);
             }
           } else if (w.globals.shouldAnimate) {
-            _this.animationCompleted();
+            _this.animationCompleted(el);
           }
 
           _this.showDelayedElements();
@@ -1268,7 +1271,7 @@
           d = pathFrom;
         } else {
           d = pathTo;
-          anim.animationCompleted();
+          w.globals.animationEnded = true;
         }
 
         var strokeDashArrayOpt = w.config.stroke.dashArray;
@@ -2335,6 +2338,7 @@
                   },
                   total: {
                     show: false,
+                    showAlways: false,
                     label: 'Total',
                     color: undefined,
                     formatter: function formatter(w) {
@@ -4998,6 +5002,7 @@
           // store the numeric x values in this array (x values)
           seriesZ: [],
           // The 3rd "Z" dimension for bubbles chart (z values)
+          columnSeries: null,
           labels: [],
           // store the text to draw on x axis
           // Don't mutate the labels, many things including tooltips depends on it!
@@ -5730,7 +5735,7 @@
             var y = pointsPos.y[q];
             radius = radius || 0;
 
-            if (x === 0 && y === 0 || y === null || typeof w.globals.series[realIndex][dataPointIndex] === 'undefined') {
+            if (y === null || typeof w.globals.series[realIndex][dataPointIndex] === 'undefined') {
               shouldDraw = false;
             }
 
@@ -6570,7 +6575,6 @@
         var j = indexes.j;
         var realIndex = indexes.realIndex;
         var bc = indexes.bc;
-        var barXPosition = x + barWidth * this.visibleI;
 
         if (w.globals.isXNumeric) {
           var sxI = i;
@@ -6579,10 +6583,10 @@
             sxI = w.globals.maxValsInArrayIndex;
           }
 
-          x = (w.globals.seriesX[sxI][j] - w.globals.minX) / this.xRatio;
-          barXPosition = x + barWidth * this.visibleI - barWidth * this.seriesLen / 2;
+          x = (w.globals.seriesX[sxI][j] - w.globals.minX) / this.xRatio - barWidth / 2;
         }
 
+        var barXPosition = x + barWidth * this.visibleI;
         pathTo = graphics.move(barXPosition, zeroH);
         pathFrom = graphics.move(barXPosition, zeroH);
 
@@ -6683,7 +6687,7 @@
         var bcy = y + parseFloat(barHeight * visibleSeries);
 
         if (w.globals.isXNumeric && !w.globals.isBarHorizontal) {
-          bcx = x + parseFloat(barWidth * (visibleSeries + 1)) / 2;
+          bcx = x + parseFloat(barWidth * (visibleSeries + 1));
           bcy = y + parseFloat(barHeight * (visibleSeries + 1)) - strokeWidth;
         }
 
@@ -8212,7 +8216,7 @@
           width: width,
           height: height
         }, speed, function () {
-          animations.animationCompleted();
+          animations.animationCompleted(el);
         });
       }
     }, {
@@ -8534,11 +8538,14 @@
         var graphics = new Graphics(this.ctx); // append filters on mouseenter and mouseleave
 
         elPath.node.addEventListener('mouseenter', graphics.pathMouseEnter.bind(this, elPath));
-        elPath.node.addEventListener('mouseenter', this.printDataLabelsInner.bind(this, elPath.node, dataLabels));
         elPath.node.addEventListener('mouseleave', graphics.pathMouseLeave.bind(this, elPath));
         elPath.node.addEventListener('mouseleave', this.revertDataLabelsInner.bind(this, elPath.node, dataLabels));
         elPath.node.addEventListener('mousedown', graphics.pathMouseDown.bind(this, elPath));
-        elPath.node.addEventListener('mousedown', this.printDataLabelsInner.bind(this, elPath.node, dataLabels));
+
+        if (!this.donutDataLabels.total.showAlways) {
+          elPath.node.addEventListener('mouseenter', this.printDataLabelsInner.bind(this, elPath.node, dataLabels));
+          elPath.node.addEventListener('mousedown', this.printDataLabelsInner.bind(this, elPath.node, dataLabels));
+        }
       } // This function can be used for other circle charts too
 
     }, {
@@ -8609,7 +8616,7 @@
             }
 
             if (opts.i === w.config.series.length - 1) {
-              animations.animationCompleted();
+              animations.animationCompleted(el);
             }
           }).during(function (pos) {
             currAngle = fromAngle + (angle - fromAngle) * pos;
@@ -9781,10 +9788,6 @@
               // zeroH is the baseline where 0 meets y axis
           zeroW = void 0; // zeroW is the baseline where 0 meets x axis
 
-          var yArrj = []; // hold y values of current iterating series
-
-          var xArrj = []; // hold x values of current iterating series
-
           var realIndex = w.globals.comboCharts ? seriesIndex[i] : i; // el to which series will be drawn
 
           var elSeries = graphics.group({
@@ -9814,18 +9817,17 @@
           x = initPositions.x;
           barWidth = initPositions.barWidth;
           xDivision = initPositions.xDivision;
-          zeroH = initPositions.zeroH;
-          xArrj.push(x + barWidth / 2); // eldatalabels
+          zeroH = initPositions.zeroH; // eldatalabels
 
           var elDataLabelsWrap = graphics.group({
             class: 'mscharts-datalabels'
           });
 
           for (var j = 0, tj = w.globals.dataPoints; j < w.globals.dataPoints; j++, tj--) {
+            this.isNullValue = false;
+
             if (typeof this.series[i][j] === 'undefined' || series[i][j] === null) {
               this.isNullValue = true;
-            } else {
-              this.isNullValue = false;
             }
 
             if (w.config.stroke.show) {
@@ -9883,11 +9885,6 @@
             y = paths.y;
             x = paths.x; // push current X
 
-            if (j > 0) {
-              xArrj.push(x + barWidth / 2);
-            }
-
-            yArrj.push(y);
             var pathFill = fill.fillPath({
               seriesNumber: realIndex
             });
@@ -9911,11 +9908,8 @@
               visibleSeries: this.visibleI,
               type: 'rangebar'
             });
-          } // push all x val arrays into main xArr
+          }
 
-
-          w.globals.seriesXvalues[realIndex] = xArrj;
-          w.globals.seriesYvalues[realIndex] = yArrj;
           ret.add(elSeries);
         }
 
@@ -11002,6 +10996,10 @@
             }
           });
         }
+
+        if (w.globals.isBarHorizontal) {
+          this.xPadRight = xaxisLabelCoords.width / 2 + 1;
+        }
       }
     }, {
       key: "titleSubtitleOffset",
@@ -11789,9 +11787,6 @@
 
           if (!Utils.isIE11()) {
             this.appendToForeignObject();
-          } else {
-            // IE11 doesn't supports foreignObject, hence append it to <head>
-            document.getElementsByTagName('head')[0].appendChild(this.getLegendStyles());
           }
 
           if (cnf.legend.position === 'bottom' || cnf.legend.position === 'top') {
@@ -11800,6 +11795,16 @@
             this.legendAlignVertical();
           }
         }
+      }
+    }, {
+      key: "getLegendStyles",
+      value: function getLegendStyles() {
+        var stylesheet = document.createElement('style');
+        stylesheet.setAttribute('type', 'text/css');
+        var text = "\t\n    \t\n      .mscharts-legend {\t\n        display: flex;\t\n        overflow: auto;\t\n        padding: 0 10px;\t\n      }\t\n      .mscharts-legend.position-bottom, .mscharts-legend.position-top {\t\n        flex-wrap: wrap\t\n      }\t\n      .mscharts-legend.position-right, .mscharts-legend.position-left {\t\n        flex-direction: column;\t\n        bottom: 0;\t\n      }\t\n      .mscharts-legend.position-bottom.left, .mscharts-legend.position-top.left, .mscharts-legend.position-right, .mscharts-legend.position-left {\t\n        justify-content: flex-start;\t\n      }\t\n      .mscharts-legend.position-bottom.center, .mscharts-legend.position-top.center {\t\n        justify-content: center;  \t\n      }\t\n      .mscharts-legend.position-bottom.right, .mscharts-legend.position-top.right {\t\n        justify-content: flex-end;\t\n      }\t\n      .mscharts-legend-series {\t\n        cursor: pointer;\t\n        line-height: normal;\t\n      }\t\n      .mscharts-legend.position-bottom .mscharts-legend-series, .mscharts-legend.position-top .mscharts-legend-series{\t\n        display: flex;\t\n        align-items: center;\t\n      }\t\n      .mscharts-legend-text {\t\n        position: relative;\t\n        font-size: 14px;\t\n      }\t\n      .mscharts-legend-text *, .mscharts-legend-marker * {\t\n        pointer-events: none;\t\n      }\t\n      .mscharts-legend-marker {\t\n        position: relative;\t\n        display: inline-block;\t\n        cursor: pointer;\t\n        margin-right: 3px;\t\n      }\t\n      \t\n      .mscharts-legend.right .mscharts-legend-series, .mscharts-legend.left .mscharts-legend-series{\t\n        display: inline-block;\t\n      }\t\n      .mscharts-legend-series.no-click {\t\n        cursor: auto;\t\n      }\t\n      .mscharts-legend .mscharts-hidden-zero-series, .mscharts-legend .mscharts-hidden-null-series {\t\n        display: none !important;\t\n      }\t\n      .inactive-legend {\t\n        opacity: 0.45;\t\n      }";
+        var rules = document.createTextNode(text);
+        stylesheet.appendChild(rules);
+        return stylesheet;
       }
     }, {
       key: "appendToForeignObject",
@@ -12112,16 +12117,6 @@
 
           this.toggleDataSeries(seriesCnt, isHidden);
         }
-      }
-    }, {
-      key: "getLegendStyles",
-      value: function getLegendStyles() {
-        var stylesheet = document.createElement('style');
-        stylesheet.setAttribute('type', 'text/css');
-        var text = "\n    \n      .mscharts-legend {\n        display: flex;\n        overflow: auto;\n        padding: 0 10px;\n      }\n\n      .mscharts-legend.position-bottom, .mscharts-legend.position-top {\n        flex-wrap: wrap\n      }\n      .mscharts-legend.position-right, .mscharts-legend.position-left {\n        flex-direction: column;\n        bottom: 0;\n      }\n\n      .mscharts-legend.position-bottom.left, .mscharts-legend.position-top.left, .mscharts-legend.position-right, .mscharts-legend.position-left {\n        justify-content: flex-start;\n      }\n\n      .mscharts-legend.position-bottom.center, .mscharts-legend.position-top.center {\n        justify-content: center;  \n      }\n\n      .mscharts-legend.position-bottom.right, .mscharts-legend.position-top.right {\n        justify-content: flex-end;\n      }\n\n      .mscharts-legend-series {\n        cursor: pointer;\n        line-height: normal;\n      }\n\n      .mscharts-legend.position-bottom .mscharts-legend-series, .mscharts-legend.position-top .mscharts-legend-series{\n        display: flex;\n        align-items: center;\n      }\n\n      .mscharts-legend-text {\n        position: relative;\n        font-size: 14px;\n      }\n\n      .mscharts-legend-text *, .mscharts-legend-marker * {\n        pointer-events: none;\n      }\n\n      .mscharts-legend-marker {\n        position: relative;\n        display: inline-block;\n        cursor: pointer;\n        margin-right: 3px;\n      }\n      \n      .mscharts-legend.right .mscharts-legend-series, .mscharts-legend.left .mscharts-legend-series{\n        display: inline-block;\n      }\n\n      .mscharts-legend-series.no-click {\n        cursor: auto;\n      }\n\n      .mscharts-legend .mscharts-hidden-zero-series, .mscharts-legend .mscharts-hidden-null-series {\n        display: none !important;\n      }\n\n      .inactive-legend {\n        opacity: 0.45;\n      }";
-        var rules = document.createTextNode(text);
-        stylesheet.appendChild(rules);
-        return stylesheet;
       }
     }, {
       key: "toggleDataSeries",
@@ -13133,7 +13128,7 @@
             var tSpan = xAxisTexts[xat].childNodes;
 
             if (w.config.xaxis.labels.trim) {
-              graphics.placeTextWithEllipsis(tSpan[0], tSpan[0].textContent, w.config.xaxis.labels.maxHeight - 40);
+              graphics.placeTextWithEllipsis(tSpan[0], tSpan[0].textContent, w.config.xaxis.labels.maxHeight - (w.config.legend.position === 'bottom' ? 20 : 10));
             }
           }
         } else {
@@ -13157,7 +13152,7 @@
             yAxisTextsInversed[yAxisTextsInversed.length - 1].parentNode.removeChild(yAxisTextsInversed[yAxisTextsInversed.length - 1]);
           }
 
-          if (lastLabelPosX.x + lastLabelPosX.width > w.globals.gridWidth) {
+          if (lastLabelPosX.x + lastLabelPosX.width > w.globals.gridWidth && !w.globals.isBarHorizontal) {
             yAxisTextsInversed[0].parentNode.removeChild(yAxisTextsInversed[0]);
           } // truncate rotated x axis in bar chart (y axis)
 
@@ -13578,6 +13573,7 @@
         if (w.globals.isMultipleYAxis || w.globals.collapsedSeries.length) {
           // The autoScale option for multiple y-axis is turned off as it leads to buggy behavior.
           // Also, when a series is collapsed, it results in incorrect behavior. Hence turned it off for that too - fixes mscharts.js#795
+          console.warn('autoScaleYaxis is not supported in a multi-yaxis chart.');
           return yaxis;
         }
 
@@ -14013,10 +14009,14 @@
               // a small hack to prevent overlapping multiple bars when there is just 1 datapoint in bar series.
               // fix #811
               sX.push(gl.seriesX[gl.maxValsInArrayIndex][gl.seriesX[gl.maxValsInArrayIndex].length - 1]);
-            }
+            } // fix #983 (clone the array to avoid side effects)
 
-            sX.sort();
-            sX.forEach(function (s, j) {
+
+            var seriesX = sX.slice();
+            seriesX.sort(function (a, b) {
+              return a - b;
+            });
+            seriesX.forEach(function (s, j) {
               if (j > 0) {
                 var xDiff = s - gl.seriesX[i][j - 1];
                 gl.minXDiff = Math.min(xDiff, gl.minXDiff);
@@ -14915,6 +14915,7 @@
 
               columnSeries.series.push(series);
               columnSeries.i.push(st);
+              w.globals.columnSeries = columnSeries.series;
             } else if (ser[st].type === 'area') {
               areaSeries.series.push(series);
               areaSeries.i.push(st);
@@ -16386,7 +16387,7 @@
               for (var _i2 = 0; _i2 < xCountForCategoryCharts; _i2++) {
                 var x1Count = xCountForCategoryCharts;
 
-                if (w.globals.isXNumeric && w.config.chart.type !== 'bar') {
+                if (w.globals.isXNumeric) {
                   x1Count -= 1;
                 }
 
@@ -17886,14 +17887,15 @@
       value: function moveStickyTooltipOverBars(j) {
         var w = this.w;
         var ttCtx = this.ttCtx;
-        var i = w.globals.maxValsInArrayIndex + 1;
+        var barLen = w.globals.columnSeries ? w.globals.columnSeries.length : w.globals.series.length;
+        var i = barLen >= 2 && barLen % 2 === 0 ? Math.floor(barLen / 2) : Math.floor(barLen / 2) + 1;
         var jBar = w.globals.dom.baseEl.querySelector(".mscharts-bar-series .mscharts-series[rel='".concat(i, "'] path[j='").concat(j, "'], .mscharts-candlestick-series .mscharts-series[rel='").concat(i, "'] path[j='").concat(j, "'], .mscharts-rangebar-series .mscharts-series[rel='").concat(i, "'] path[j='").concat(j, "']"));
         var bcx = jBar ? parseFloat(jBar.getAttribute('cx')) : 0;
         var bcy = 0;
         var bw = jBar ? parseFloat(jBar.getAttribute('barWidth')) : 0;
 
         if (w.globals.isXNumeric) {
-          bcx = bcx - bw / 2;
+          bcx = bcx - (barLen % 2 !== 0 ? bw / 2 : 0);
         } else {
           bcx = ttCtx.xAxisTicksPositions[j - 1] + ttCtx.dataPointsDividedWidth / 2;
 
@@ -27700,7 +27702,7 @@
     }
   }
 
-  var css = ".mscharts-canvas {\r\n  position: relative;\r\n  user-select: none;\r\n  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */\r\n}\r\n\r\n/* scrollbar is not visible by default for legend, hence forcing the visibility */\r\n.mscharts-canvas ::-webkit-scrollbar {\r\n  -webkit-appearance: none;\r\n  width: 6px;\r\n}\r\n.mscharts-canvas ::-webkit-scrollbar-thumb {\r\n  border-radius: 4px;\r\n  background-color: rgba(0,0,0,.5);\r\n  box-shadow: 0 0 1px rgba(255,255,255,.5);\r\n  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);\r\n}\r\n.mscharts-canvas.dark {\r\n  background: #343F57;\r\n}\r\n\r\n.mscharts-inner {\r\n  position: relative;\r\n}\r\n\r\n.legend-mouseover-inactive {\r\n  transition: 0.15s ease all;\r\n  opacity: 0.20;\r\n}\r\n\r\n.mscharts-series-collapsed {\r\n  opacity: 0;\r\n}\r\n\r\n.mscharts-gridline, .mscharts-text {\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-tooltip {\r\n  border-radius: 5px;\r\n  box-shadow: 2px 2px 6px -4px #999;\r\n  cursor: default;\r\n  font-size: 14px;\r\n  left: 62px;\r\n  opacity: 0;\r\n  pointer-events: none;\r\n  position: absolute;\r\n  top: 20px;\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  z-index: 12;\r\n  transition: 0.15s ease all;\r\n}\r\n.mscharts-tooltip.light {\r\n  border: 1px solid #e3e3e3;\r\n  background: rgba(255, 255, 255, 0.96);\r\n}\r\n.mscharts-tooltip.dark {\r\n  color: #fff;\r\n  background: rgba(30,30,30, 0.8);\r\n}\r\n.mscharts-tooltip * {\r\n  font-family: inherit;\r\n}\r\n\r\n.mscharts-tooltip .mscharts-marker,\r\n.mscharts-area-series .mscharts-area,\r\n.mscharts-line {\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-tooltip.active {\r\n  opacity: 1;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-tooltip-title {\r\n  padding: 6px;\r\n  font-size: 15px;\r\n  margin-bottom: 4px;\r\n}\r\n.mscharts-tooltip.light .mscharts-tooltip-title {\r\n  background: #ECEFF1;\r\n  border-bottom: 1px solid #ddd;\r\n}\r\n.mscharts-tooltip.dark .mscharts-tooltip-title {\r\n  background: rgba(0, 0, 0, 0.7);\r\n  border-bottom: 1px solid #333;\r\n}\r\n\r\n.mscharts-tooltip-text-value,\r\n.mscharts-tooltip-text-z-value {\r\n  display: inline-block;\r\n  font-weight: 600;\r\n  margin-left: 5px;\r\n}\r\n\r\n.mscharts-tooltip-text-z-label:empty,\r\n.mscharts-tooltip-text-z-value:empty {\r\n  display: none;\r\n}\r\n\r\n.mscharts-tooltip-text-value, \r\n.mscharts-tooltip-text-z-value {\r\n  font-weight: 600;\r\n}\r\n\r\n.mscharts-tooltip-marker {\r\n  width: 12px;\r\n  height: 12px;\r\n  position: relative;\r\n  top: 0px;\r\n  margin-right: 10px;\r\n  border-radius: 50%;\r\n}\r\n\r\n.mscharts-tooltip-series-group {\r\n  padding: 0 10px;\r\n  display: none;\r\n  text-align: left;\r\n  justify-content: left;\r\n  align-items: center;\r\n}\r\n\r\n.mscharts-tooltip-series-group.active .mscharts-tooltip-marker {\r\n  opacity: 1;\r\n}\r\n.mscharts-tooltip-series-group.active, .mscharts-tooltip-series-group:last-child {\r\n  padding-bottom: 4px;\r\n}\r\n.mscharts-tooltip-series-group-hidden {\r\n  opacity: 0;\r\n  height: 0;\r\n  line-height: 0;\r\n  padding: 0 !important;\r\n}\r\n.mscharts-tooltip-y-group {\r\n  padding: 6px 0 5px;\r\n}\r\n.mscharts-tooltip-candlestick {\r\n  padding: 4px 8px;\r\n}\r\n.mscharts-tooltip-candlestick > div {\r\n  margin: 4px 0;\r\n}\r\n.mscharts-tooltip-candlestick span.value {\r\n  font-weight: bold;\r\n}\r\n\r\n.mscharts-tooltip-rangebar {\r\n  padding: 5px 8px;\r\n}\r\n\r\n.mscharts-tooltip-rangebar .category {\r\n  font-weight: 600;\r\n  color: #777;\r\n}\r\n\r\n.mscharts-tooltip-rangebar .series-name {\r\n  font-weight: bold;\r\n  display: block;\r\n  margin-bottom: 5px;\r\n}\r\n\r\n.mscharts-xaxistooltip {\r\n  opacity: 0;\r\n  padding: 9px 10px;\r\n  pointer-events: none;\r\n  color: #373d3f;\r\n  font-size: 13px;\r\n  text-align: center;\r\n  border-radius: 2px;\r\n  position: absolute;\r\n  z-index: 10;\r\n\tbackground: #ECEFF1;\r\n  border: 1px solid #90A4AE;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-xaxistooltip.dark {\r\n  background: rgba(0, 0, 0, 0.7);\r\n  border: 1px solid rgba(0, 0, 0, 0.5);\r\n  color: #fff;\r\n}\r\n\r\n.mscharts-xaxistooltip:after, .mscharts-xaxistooltip:before {\r\n\tleft: 50%;\r\n\tborder: solid transparent;\r\n\tcontent: \" \";\r\n\theight: 0;\r\n\twidth: 0;\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n}\r\n\r\n.mscharts-xaxistooltip:after {\r\n\tborder-color: rgba(236, 239, 241, 0);\r\n\tborder-width: 6px;\r\n\tmargin-left: -6px;\r\n}\r\n.mscharts-xaxistooltip:before {\r\n\tborder-color: rgba(144, 164, 174, 0);\r\n\tborder-width: 7px;\r\n\tmargin-left: -7px;\r\n}\r\n\r\n.mscharts-xaxistooltip-bottom:after, .mscharts-xaxistooltip-bottom:before {\r\n  bottom: 100%;\r\n}\r\n\r\n.mscharts-xaxistooltip-top:after, .mscharts-xaxistooltip-top:before {\r\n  top: 100%;\r\n}\r\n\r\n.mscharts-xaxistooltip-bottom:after {\r\n  border-bottom-color: #ECEFF1;\r\n}\r\n.mscharts-xaxistooltip-bottom:before {\r\n  border-bottom-color: #90A4AE;\r\n}\r\n\r\n.mscharts-xaxistooltip-bottom.dark:after {\r\n  border-bottom-color: rgba(0, 0, 0, 0.5);\r\n}\r\n.mscharts-xaxistooltip-bottom.dark:before {\r\n  border-bottom-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.mscharts-xaxistooltip-top:after {\r\n  border-top-color:#ECEFF1\r\n}\r\n.mscharts-xaxistooltip-top:before {\r\n  border-top-color: #90A4AE;\r\n}\r\n.mscharts-xaxistooltip-top.dark:after {\r\n  border-top-color:rgba(0, 0, 0, 0.5);\r\n}\r\n.mscharts-xaxistooltip-top.dark:before {\r\n  border-top-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n\r\n.mscharts-xaxistooltip.active {\r\n  opacity: 1;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-yaxistooltip {\r\n  opacity: 0;\r\n  padding: 4px 10px;\r\n  pointer-events: none;\r\n  color: #373d3f;\r\n  font-size: 13px;\r\n  text-align: center;\r\n  border-radius: 2px;\r\n  position: absolute;\r\n  z-index: 10;\r\n\tbackground: #ECEFF1;\r\n  border: 1px solid #90A4AE;\r\n}\r\n\r\n.mscharts-yaxistooltip.dark {\r\n  background: rgba(0, 0, 0, 0.7);\r\n  border: 1px solid rgba(0, 0, 0, 0.5);\r\n  color: #fff;\r\n}\r\n\r\n.mscharts-yaxistooltip:after, .mscharts-yaxistooltip:before {\r\n\ttop: 50%;\r\n\tborder: solid transparent;\r\n\tcontent: \" \";\r\n\theight: 0;\r\n\twidth: 0;\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n}\r\n.mscharts-yaxistooltip:after {\r\n\tborder-color: rgba(236, 239, 241, 0);\r\n\tborder-width: 6px;\r\n\tmargin-top: -6px;\r\n}\r\n.mscharts-yaxistooltip:before {\r\n\tborder-color: rgba(144, 164, 174, 0);\r\n\tborder-width: 7px;\r\n\tmargin-top: -7px;\r\n}\r\n\r\n.mscharts-yaxistooltip-left:after, .mscharts-yaxistooltip-left:before {\r\n  left: 100%;\r\n}\r\n\r\n.mscharts-yaxistooltip-right:after, .mscharts-yaxistooltip-right:before {\r\n  right: 100%;\r\n}\r\n\r\n.mscharts-yaxistooltip-left:after {\r\n  border-left-color: #ECEFF1;\r\n}\r\n.mscharts-yaxistooltip-left:before {\r\n  border-left-color: #90A4AE;\r\n}\r\n.mscharts-yaxistooltip-left.dark:after {\r\n  border-left-color: rgba(0, 0, 0, 0.5);\r\n}\r\n.mscharts-yaxistooltip-left.dark:before {\r\n  border-left-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.mscharts-yaxistooltip-right:after {\r\n  border-right-color: #ECEFF1;\r\n}\r\n.mscharts-yaxistooltip-right:before {\r\n  border-right-color: #90A4AE;\r\n}\r\n.mscharts-yaxistooltip-right.dark:after {\r\n  border-right-color: rgba(0, 0, 0, 0.5);\r\n}\r\n.mscharts-yaxistooltip-right.dark:before {\r\n  border-right-color: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.mscharts-yaxistooltip.active {\r\n  opacity: 1;\r\n}\r\n.mscharts-yaxistooltip-hidden {\r\n  display: none;\r\n}\r\n\r\n.mscharts-xcrosshairs, .mscharts-ycrosshairs {\r\n  pointer-events: none;\r\n  opacity: 0;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-xcrosshairs.active, .mscharts-ycrosshairs.active {\r\n  opacity: 1;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-ycrosshairs-hidden {\r\n  opacity: 0;\r\n}\r\n\r\n.mscharts-zoom-rect {\r\n  pointer-events: none;\r\n}\r\n.mscharts-selection-rect {\r\n  cursor: move;\r\n}\r\n\r\n.svg_select_points, .svg_select_points_rot {\r\n  opacity: 0;\r\n  visibility: hidden;\r\n}\r\n.svg_select_points_l, .svg_select_points_r {\r\n  cursor: ew-resize;\r\n  opacity: 1;\r\n  visibility: visible;\r\n  fill: #888;\r\n}\r\n.mscharts-canvas.zoomable .hovering-zoom {\r\n  cursor: crosshair\r\n}\r\n.mscharts-canvas.zoomable .hovering-pan {\r\n  cursor: move\r\n}\r\n\r\n.mscharts-xaxis,\r\n.mscharts-yaxis {\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-zoom-icon, \r\n.mscharts-zoom-in-icon,\r\n.mscharts-zoom-out-icon,\r\n.mscharts-reset-zoom-icon, \r\n.mscharts-pan-icon, \r\n.mscharts-selection-icon,\r\n.mscharts-menu-icon, \r\n.mscharts-toolbar-custom-icon {\r\n  cursor: pointer;\r\n  width: 20px;\r\n  height: 20px;\r\n  line-height: 24px;\r\n  color: #6E8192;\r\n  text-align: center;\r\n}\r\n\r\n\r\n.mscharts-zoom-icon svg, \r\n.mscharts-zoom-in-icon svg,\r\n.mscharts-zoom-out-icon svg,\r\n.mscharts-reset-zoom-icon svg,\r\n.mscharts-menu-icon svg {\r\n  fill: #6E8192;\r\n}\r\n.mscharts-selection-icon svg {\r\n  fill: #444;\r\n  transform: scale(0.76)\r\n}\r\n\r\n.dark .mscharts-zoom-icon svg, \r\n.dark .mscharts-zoom-in-icon svg,\r\n.dark .mscharts-zoom-out-icon svg,\r\n.dark .mscharts-reset-zoom-icon svg, \r\n.dark .mscharts-pan-icon svg, \r\n.dark .mscharts-selection-icon svg,\r\n.dark .mscharts-menu-icon svg, \r\n.dark .mscharts-toolbar-custom-icon svg{\r\n  fill: #f3f4f5;\r\n}\r\n\r\n.mscharts-canvas .mscharts-zoom-icon.selected svg, \r\n.mscharts-canvas .mscharts-selection-icon.selected svg, \r\n.mscharts-canvas .mscharts-reset-zoom-icon.selected svg {\r\n  fill: #008FFB;\r\n}\r\n.light .mscharts-selection-icon:not(.selected):hover svg,\r\n.light .mscharts-zoom-icon:not(.selected):hover svg, \r\n.light .mscharts-zoom-in-icon:hover svg, \r\n.light .mscharts-zoom-out-icon:hover svg, \r\n.light .mscharts-reset-zoom-icon:hover svg, \r\n.light .mscharts-menu-icon:hover svg {\r\n  fill: #333;\r\n}\r\n\r\n.mscharts-selection-icon, .mscharts-menu-icon {\r\n  position: relative;\r\n}\r\n.mscharts-reset-zoom-icon {\r\n  margin-left: 5px;\r\n}\r\n.mscharts-zoom-icon, .mscharts-reset-zoom-icon, .mscharts-menu-icon {\r\n  transform: scale(0.85);\r\n}\r\n\r\n.mscharts-zoom-in-icon, .mscharts-zoom-out-icon {\r\n  transform: scale(0.7)\r\n}\r\n\r\n.mscharts-zoom-out-icon {\r\n  margin-right: 3px;\r\n}\r\n\r\n.mscharts-pan-icon {\r\n  transform: scale(0.62);\r\n  position: relative;\r\n  left: 1px;\r\n  top: 0px;\r\n}\r\n.mscharts-pan-icon svg {\r\n  fill: #fff;\r\n  stroke: #6E8192;\r\n  stroke-width: 2;\r\n}\r\n.mscharts-pan-icon.selected svg {\r\n  stroke: #008FFB;\r\n}\r\n.mscharts-pan-icon:not(.selected):hover svg {\r\n  stroke: #333;\r\n}\r\n\r\n.mscharts-toolbar {\r\n  position: absolute;\r\n  z-index: 11;\r\n  top: 0px;\r\n  right: 3px;\r\n  max-width: 176px;\r\n  text-align: right;\r\n  border-radius: 3px;\r\n  padding: 0px 6px 2px 6px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center; \r\n}\r\n\r\n.mscharts-toolbar svg {\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-menu {\r\n  background: #fff;\r\n  position: absolute;\r\n  top: 100%;\r\n  border: 1px solid #ddd;\r\n  border-radius: 3px;\r\n  padding: 3px;\r\n  right: 10px;\r\n  opacity: 0;\r\n  min-width: 110px;\r\n  transition: 0.15s ease all;\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-menu.open {\r\n  opacity: 1;\r\n  pointer-events: all;\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n.mscharts-menu-item {\r\n  padding: 6px 7px;\r\n  font-size: 12px;\r\n  cursor: pointer;\r\n}\r\n.light .mscharts-menu-item:hover {\r\n  background: #eee;\r\n}\r\n.dark .mscharts-menu {\r\n  background: rgba(0, 0, 0, 0.7);\r\n  color: #fff;\r\n}\r\n\r\n@media screen and (min-width: 768px) {\r\n  .mscharts-toolbar {\r\n    /*opacity: 0;*/\r\n  }\r\n\r\n  .mscharts-canvas:hover .mscharts-toolbar {\r\n    opacity: 1;\r\n  } \r\n}\r\n\r\n.mscharts-datalabel.hidden {\r\n  opacity: 0;\r\n}\r\n\r\n.mscharts-pie-label,\r\n.mscharts-datalabel, .mscharts-datalabel-label, .mscharts-datalabel-value {\r\n  cursor: default;\r\n  pointer-events: none;\r\n}\r\n\r\n.mscharts-pie-label-delay {\r\n  opacity: 0;\r\n  animation-name: opaque;\r\n  animation-duration: 0.3s;\r\n  animation-fill-mode: forwards;\r\n  animation-timing-function: ease;\r\n}\r\n\r\n.mscharts-canvas .hidden {\r\n  opacity: 0;\r\n}\r\n\r\n.mscharts-hide .mscharts-series-points {\r\n  opacity: 0;\r\n}\r\n\r\n.mscharts-area-series .mscharts-series-markers .mscharts-marker.no-pointer-events,\r\n.mscharts-line-series .mscharts-series-markers .mscharts-marker.no-pointer-events, .mscharts-radar-series path, .mscharts-radar-series polygon {\r\n  pointer-events: none;\r\n}\r\n\r\n/* markers */\r\n\r\n.mscharts-marker {\r\n  transition: 0.15s ease all;\r\n}\r\n\r\n@keyframes opaque {\r\n  0% {\r\n    opacity: 0;\r\n  }\r\n  100% {\r\n    opacity: 1;\r\n  }\r\n}";
+  var css = ".mscharts-canvas {\n  position: relative;\n  user-select: none;\n  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */\n}\n\n/* scrollbar is not visible by default for legend, hence forcing the visibility */\n.mscharts-canvas ::-webkit-scrollbar {\n  -webkit-appearance: none;\n  width: 6px;\n}\n.mscharts-canvas ::-webkit-scrollbar-thumb {\n  border-radius: 4px;\n  background-color: rgba(0,0,0,.5);\n  box-shadow: 0 0 1px rgba(255,255,255,.5);\n  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);\n}\n.mscharts-canvas.dark {\n  background: #343F57;\n}\n\n.mscharts-inner {\n  position: relative;\n}\n\n.legend-mouseover-inactive {\n  transition: 0.15s ease all;\n  opacity: 0.20;\n}\n\n.mscharts-series-collapsed {\n  opacity: 0;\n}\n\n.mscharts-gridline, .mscharts-text {\n  pointer-events: none;\n}\n\n.mscharts-tooltip {\n  border-radius: 5px;\n  box-shadow: 2px 2px 6px -4px #999;\n  cursor: default;\n  font-size: 14px;\n  left: 62px;\n  opacity: 0;\n  pointer-events: none;\n  position: absolute;\n  top: 20px;\n  overflow: hidden;\n  white-space: nowrap;\n  z-index: 12;\n  transition: 0.15s ease all;\n}\n.mscharts-tooltip.light {\n  border: 1px solid #e3e3e3;\n  background: rgba(255, 255, 255, 0.96);\n}\n.mscharts-tooltip.dark {\n  color: #fff;\n  background: rgba(30,30,30, 0.8);\n}\n.mscharts-tooltip * {\n  font-family: inherit;\n}\n\n.mscharts-tooltip .mscharts-marker,\n.mscharts-area-series .mscharts-area,\n.mscharts-line {\n  pointer-events: none;\n}\n\n.mscharts-tooltip.active {\n  opacity: 1;\n  transition: 0.15s ease all;\n}\n\n.mscharts-tooltip-title {\n  padding: 6px;\n  font-size: 15px;\n  margin-bottom: 4px;\n}\n.mscharts-tooltip.light .mscharts-tooltip-title {\n  background: #ECEFF1;\n  border-bottom: 1px solid #ddd;\n}\n.mscharts-tooltip.dark .mscharts-tooltip-title {\n  background: rgba(0, 0, 0, 0.7);\n  border-bottom: 1px solid #333;\n}\n\n.mscharts-tooltip-text-value,\n.mscharts-tooltip-text-z-value {\n  display: inline-block;\n  font-weight: 600;\n  margin-left: 5px;\n}\n\n.mscharts-tooltip-text-z-label:empty,\n.mscharts-tooltip-text-z-value:empty {\n  display: none;\n}\n\n.mscharts-tooltip-text-value,\n.mscharts-tooltip-text-z-value {\n  font-weight: 600;\n}\n\n.mscharts-tooltip-marker {\n  width: 12px;\n  height: 12px;\n  position: relative;\n  top: 0px;\n  margin-right: 10px;\n  border-radius: 50%;\n}\n\n.mscharts-tooltip-series-group {\n  padding: 0 10px;\n  display: none;\n  text-align: left;\n  justify-content: left;\n  align-items: center;\n}\n\n.mscharts-tooltip-series-group.active .mscharts-tooltip-marker {\n  opacity: 1;\n}\n.mscharts-tooltip-series-group.active, .mscharts-tooltip-series-group:last-child {\n  padding-bottom: 4px;\n}\n.mscharts-tooltip-series-group-hidden {\n  opacity: 0;\n  height: 0;\n  line-height: 0;\n  padding: 0 !important;\n}\n.mscharts-tooltip-y-group {\n  padding: 6px 0 5px;\n}\n.mscharts-tooltip-candlestick {\n  padding: 4px 8px;\n}\n.mscharts-tooltip-candlestick > div {\n  margin: 4px 0;\n}\n.mscharts-tooltip-candlestick span.value {\n  font-weight: bold;\n}\n\n.mscharts-tooltip-rangebar {\n  padding: 5px 8px;\n}\n\n.mscharts-tooltip-rangebar .category {\n  font-weight: 600;\n  color: #777;\n}\n\n.mscharts-tooltip-rangebar .series-name {\n  font-weight: bold;\n  display: block;\n  margin-bottom: 5px;\n}\n\n.mscharts-xaxistooltip {\n  opacity: 0;\n  padding: 9px 10px;\n  pointer-events: none;\n  color: #373d3f;\n  font-size: 13px;\n  text-align: center;\n  border-radius: 2px;\n  position: absolute;\n  z-index: 10;\n  background: #ECEFF1;\n  border: 1px solid #90A4AE;\n  transition: 0.15s ease all;\n}\n\n.mscharts-xaxistooltip.dark {\n  background: rgba(0, 0, 0, 0.7);\n  border: 1px solid rgba(0, 0, 0, 0.5);\n  color: #fff;\n}\n\n.mscharts-xaxistooltip:after, .mscharts-xaxistooltip:before {\n  left: 50%;\n  border: solid transparent;\n  content: \" \";\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n}\n\n.mscharts-xaxistooltip:after {\n  border-color: rgba(236, 239, 241, 0);\n  border-width: 6px;\n  margin-left: -6px;\n}\n.mscharts-xaxistooltip:before {\n  border-color: rgba(144, 164, 174, 0);\n  border-width: 7px;\n  margin-left: -7px;\n}\n\n.mscharts-xaxistooltip-bottom:after, .mscharts-xaxistooltip-bottom:before {\n  bottom: 100%;\n}\n\n.mscharts-xaxistooltip-top:after, .mscharts-xaxistooltip-top:before {\n  top: 100%;\n}\n\n.mscharts-xaxistooltip-bottom:after {\n  border-bottom-color: #ECEFF1;\n}\n.mscharts-xaxistooltip-bottom:before {\n  border-bottom-color: #90A4AE;\n}\n\n.mscharts-xaxistooltip-bottom.dark:after {\n  border-bottom-color: rgba(0, 0, 0, 0.5);\n}\n.mscharts-xaxistooltip-bottom.dark:before {\n  border-bottom-color: rgba(0, 0, 0, 0.5);\n}\n\n.mscharts-xaxistooltip-top:after {\n  border-top-color:#ECEFF1\n}\n.mscharts-xaxistooltip-top:before {\n  border-top-color: #90A4AE;\n}\n.mscharts-xaxistooltip-top.dark:after {\n  border-top-color:rgba(0, 0, 0, 0.5);\n}\n.mscharts-xaxistooltip-top.dark:before {\n  border-top-color: rgba(0, 0, 0, 0.5);\n}\n\n\n.mscharts-xaxistooltip.active {\n  opacity: 1;\n  transition: 0.15s ease all;\n}\n\n.mscharts-yaxistooltip {\n  opacity: 0;\n  padding: 4px 10px;\n  pointer-events: none;\n  color: #373d3f;\n  font-size: 13px;\n  text-align: center;\n  border-radius: 2px;\n  position: absolute;\n  z-index: 10;\n  background: #ECEFF1;\n  border: 1px solid #90A4AE;\n}\n\n.mscharts-yaxistooltip.dark {\n  background: rgba(0, 0, 0, 0.7);\n  border: 1px solid rgba(0, 0, 0, 0.5);\n  color: #fff;\n}\n\n.mscharts-yaxistooltip:after, .mscharts-yaxistooltip:before {\n  top: 50%;\n  border: solid transparent;\n  content: \" \";\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n}\n.mscharts-yaxistooltip:after {\n  border-color: rgba(236, 239, 241, 0);\n  border-width: 6px;\n  margin-top: -6px;\n}\n.mscharts-yaxistooltip:before {\n  border-color: rgba(144, 164, 174, 0);\n  border-width: 7px;\n  margin-top: -7px;\n}\n\n.mscharts-yaxistooltip-left:after, .mscharts-yaxistooltip-left:before {\n  left: 100%;\n}\n\n.mscharts-yaxistooltip-right:after, .mscharts-yaxistooltip-right:before {\n  right: 100%;\n}\n\n.mscharts-yaxistooltip-left:after {\n  border-left-color: #ECEFF1;\n}\n.mscharts-yaxistooltip-left:before {\n  border-left-color: #90A4AE;\n}\n.mscharts-yaxistooltip-left.dark:after {\n  border-left-color: rgba(0, 0, 0, 0.5);\n}\n.mscharts-yaxistooltip-left.dark:before {\n  border-left-color: rgba(0, 0, 0, 0.5);\n}\n\n.mscharts-yaxistooltip-right:after {\n  border-right-color: #ECEFF1;\n}\n.mscharts-yaxistooltip-right:before {\n  border-right-color: #90A4AE;\n}\n.mscharts-yaxistooltip-right.dark:after {\n  border-right-color: rgba(0, 0, 0, 0.5);\n}\n.mscharts-yaxistooltip-right.dark:before {\n  border-right-color: rgba(0, 0, 0, 0.5);\n}\n\n.mscharts-yaxistooltip.active {\n  opacity: 1;\n}\n.mscharts-yaxistooltip-hidden {\n  display: none;\n}\n\n.mscharts-xcrosshairs, .mscharts-ycrosshairs {\n  pointer-events: none;\n  opacity: 0;\n  transition: 0.15s ease all;\n}\n\n.mscharts-xcrosshairs.active, .mscharts-ycrosshairs.active {\n  opacity: 1;\n  transition: 0.15s ease all;\n}\n\n.mscharts-ycrosshairs-hidden {\n  opacity: 0;\n}\n\n.mscharts-zoom-rect {\n  pointer-events: none;\n}\n.mscharts-selection-rect {\n  cursor: move;\n}\n\n.svg_select_points, .svg_select_points_rot {\n  opacity: 0;\n  visibility: hidden;\n}\n.svg_select_points_l, .svg_select_points_r {\n  cursor: ew-resize;\n  opacity: 1;\n  visibility: visible;\n  fill: #888;\n}\n.mscharts-canvas.zoomable .hovering-zoom {\n  cursor: crosshair\n}\n.mscharts-canvas.zoomable .hovering-pan {\n  cursor: move\n}\n\n.mscharts-xaxis,\n.mscharts-yaxis {\n  pointer-events: none;\n}\n\n.mscharts-zoom-icon,\n.mscharts-zoom-in-icon,\n.mscharts-zoom-out-icon,\n.mscharts-reset-zoom-icon,\n.mscharts-pan-icon,\n.mscharts-selection-icon,\n.mscharts-menu-icon,\n.mscharts-toolbar-custom-icon {\n  cursor: pointer;\n  width: 20px;\n  height: 20px;\n  line-height: 24px;\n  color: #6E8192;\n  text-align: center;\n}\n\n\n.mscharts-zoom-icon svg,\n.mscharts-zoom-in-icon svg,\n.mscharts-zoom-out-icon svg,\n.mscharts-reset-zoom-icon svg,\n.mscharts-menu-icon svg {\n  fill: #6E8192;\n}\n.mscharts-selection-icon svg {\n  fill: #444;\n  transform: scale(0.76)\n}\n\n.dark .mscharts-zoom-icon svg,\n.dark .mscharts-zoom-in-icon svg,\n.dark .mscharts-zoom-out-icon svg,\n.dark .mscharts-reset-zoom-icon svg,\n.dark .mscharts-pan-icon svg,\n.dark .mscharts-selection-icon svg,\n.dark .mscharts-menu-icon svg,\n.dark .mscharts-toolbar-custom-icon svg{\n  fill: #f3f4f5;\n}\n\n.mscharts-canvas .mscharts-zoom-icon.selected svg,\n.mscharts-canvas .mscharts-selection-icon.selected svg,\n.mscharts-canvas .mscharts-reset-zoom-icon.selected svg {\n  fill: #008FFB;\n}\n.light .mscharts-selection-icon:not(.selected):hover svg,\n.light .mscharts-zoom-icon:not(.selected):hover svg,\n.light .mscharts-zoom-in-icon:hover svg,\n.light .mscharts-zoom-out-icon:hover svg,\n.light .mscharts-reset-zoom-icon:hover svg,\n.light .mscharts-menu-icon:hover svg {\n  fill: #333;\n}\n\n.mscharts-selection-icon, .mscharts-menu-icon {\n  position: relative;\n}\n.mscharts-reset-zoom-icon {\n  margin-left: 5px;\n}\n.mscharts-zoom-icon, .mscharts-reset-zoom-icon, .mscharts-menu-icon {\n  transform: scale(0.85);\n}\n\n.mscharts-zoom-in-icon, .mscharts-zoom-out-icon {\n  transform: scale(0.7)\n}\n\n.mscharts-zoom-out-icon {\n  margin-right: 3px;\n}\n\n.mscharts-pan-icon {\n  transform: scale(0.62);\n  position: relative;\n  left: 1px;\n  top: 0px;\n}\n.mscharts-pan-icon svg {\n  fill: #fff;\n  stroke: #6E8192;\n  stroke-width: 2;\n}\n.mscharts-pan-icon.selected svg {\n  stroke: #008FFB;\n}\n.mscharts-pan-icon:not(.selected):hover svg {\n  stroke: #333;\n}\n\n.mscharts-toolbar {\n  position: absolute;\n  z-index: 11;\n  top: 0px;\n  right: 3px;\n  max-width: 176px;\n  text-align: right;\n  border-radius: 3px;\n  padding: 0px 6px 2px 6px;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.mscharts-toolbar svg {\n  pointer-events: none;\n}\n\n.mscharts-menu {\n  background: #fff;\n  position: absolute;\n  top: 100%;\n  border: 1px solid #ddd;\n  border-radius: 3px;\n  padding: 3px;\n  right: 10px;\n  opacity: 0;\n  min-width: 110px;\n  transition: 0.15s ease all;\n  pointer-events: none;\n}\n\n.mscharts-menu.open {\n  opacity: 1;\n  pointer-events: all;\n  transition: 0.15s ease all;\n}\n\n.mscharts-menu-item {\n  padding: 6px 7px;\n  font-size: 12px;\n  cursor: pointer;\n}\n.light .mscharts-menu-item:hover {\n  background: #eee;\n}\n.dark .mscharts-menu {\n  background: rgba(0, 0, 0, 0.7);\n  color: #fff;\n}\n\n@media screen and (min-width: 768px) {\n  .mscharts-toolbar {\n    /*opacity: 0;*/\n  }\n\n  .mscharts-canvas:hover .mscharts-toolbar {\n    opacity: 1;\n  }\n}\n\n.mscharts-datalabel.hidden {\n  opacity: 0;\n}\n\n.mscharts-pie-label,\n.mscharts-datalabel, .mscharts-datalabel-label, .mscharts-datalabel-value {\n  cursor: default;\n  pointer-events: none;\n}\n\n.mscharts-pie-label-delay {\n  opacity: 0;\n  animation-name: opaque;\n  animation-duration: 0.3s;\n  animation-fill-mode: forwards;\n  animation-timing-function: ease;\n}\n\n.mscharts-canvas .hidden {\n  opacity: 0;\n}\n\n.mscharts-hide .mscharts-series-points {\n  opacity: 0;\n}\n\n.mscharts-area-series .mscharts-series-markers .mscharts-marker.no-pointer-events,\n.mscharts-line-series .mscharts-series-markers .mscharts-marker.no-pointer-events, .mscharts-radar-series path, .mscharts-radar-series polygon {\n  pointer-events: none;\n}\n\n/* markers */\n\n.mscharts-marker {\n  transition: 0.15s ease all;\n}\n\n@keyframes opaque {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n/* Resize generated styles */\n@keyframes resizeanim {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 0;\n  }\n}\n\n.resize-triggers {\n  animation: 1ms resizeanim;\n  visibility: hidden;\n  opacity: 0;\n}\n\n.resize-triggers, .resize-triggers > div, .contract-trigger:before {\n  content: \" \";\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  overflow: hidden;\n}\n\n.resize-triggers > div {\n  background: #eee;\n  overflow: auto;\n}\n\n.contract-trigger:before {\n  width: 200%;\n  height: 200%;\n}\n";
   styleInject(css);
 
   /*
@@ -27958,8 +27960,6 @@
   * version: 0.5.3
   **/
   (function () {
-    var stylesCreated = false;
-
     function resetTriggers(element) {
       var triggers = element.__resizeTriggers__,
           expand = triggers.firstElementChild,
@@ -27993,25 +27993,6 @@
       });
     }
 
-    function createStyles() {
-      if (!stylesCreated) {
-        // opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
-        var css = (animationKeyframes || '') + '.resize-triggers { ' + (animationStyle || '') + 'visibility: hidden; opacity: 0; } ' + '.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \"; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
-            head = document.head || document.getElementsByTagName('head')[0],
-            style = document.createElement('style');
-        style.type = 'text/css';
-
-        if (style.styleSheet) {
-          style.styleSheet.cssText = css;
-        } else {
-          style.appendChild(document.createTextNode(css));
-        }
-
-        head.appendChild(style);
-        stylesCreated = true;
-      }
-    }
-
     var requestFrame = function () {
       var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (fn) {
         return window.setTimeout(fn, 20);
@@ -28032,11 +28013,9 @@
 
 
     var animation = false,
-        keyframeprefix = '',
         animationstartevent = 'animationstart',
         domPrefixes = 'Webkit Moz O ms'.split(' '),
-        startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(' '),
-        pfx = '';
+        startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(' ');
     {
       var elm = document.createElement('fakeelement');
 
@@ -28047,8 +28026,6 @@
       if (animation === false) {
         for (var i = 0; i < domPrefixes.length; i++) {
           if (elm.style[domPrefixes[i] + 'AnimationName'] !== undefined) {
-            pfx = domPrefixes[i];
-            keyframeprefix = '-' + pfx.toLowerCase() + '-';
             animationstartevent = startEvents[i];
             break;
           }
@@ -28056,13 +28033,10 @@
       }
     }
     var animationName = 'resizeanim';
-    var animationKeyframes = '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
-    var animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
 
     window.addResizeListener = function (element, fn) {
       if (!element.__resizeTriggers__) {
         if (getComputedStyle(element).position == 'static') element.style.position = 'relative';
-        createStyles();
         element.__resizeLast__ = {};
         element.__resizeListeners__ = [];
         (element.__resizeTriggers__ = document.createElement('div')).className = 'resize-triggers';

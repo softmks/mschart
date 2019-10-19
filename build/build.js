@@ -6,9 +6,9 @@ const terser = require('terser')
 const chalk = require('chalk')
 
 if (!fs.existsSync('dist')) {
-    fs.mkdirSync('dist')
+  fs.mkdirSync('dist')
 }
-const builds = require('./config').getAllBuilds();
+const builds = require('./config').getAllBuilds()
 build(builds)
   .then((r) => {
     console.log(chalk.green('Build Completed'))

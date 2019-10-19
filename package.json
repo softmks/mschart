@@ -1,6 +1,6 @@
 {
   "name": "mschart",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A javascript implementation of chart library",
   "main": "dist/mscharts.common.js",
   "module": "dist/mscharts.esm.js",

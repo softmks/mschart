@@ -38,11 +38,6 @@ class Legend {
       this.drawLegends()
       if (!Utils.isIE11()) {
         this.appendToForeignObject()
-      } else {
-        // IE11 doesn't supports foreignObject, hence append it to <head>
-        document
-          .getElementsByTagName('head')[0]
-          .appendChild(this.getLegendStyles())
       }
 
       if (cnf.legend.position === 'bottom' || cnf.legend.position === 'top') {
@@ -54,6 +49,75 @@ class Legend {
         this.legendAlignVertical()
       }
     }
+  }
+
+  getLegendStyles() {
+    var stylesheet = document.createElement('style')
+    stylesheet.setAttribute('type', 'text/css')
+
+    const text = `	
+    	
+      .mscharts-legend {	
+        display: flex;	
+        overflow: auto;	
+        padding: 0 10px;	
+      }	
+      .mscharts-legend.position-bottom, .mscharts-legend.position-top {	
+        flex-wrap: wrap	
+      }	
+      .mscharts-legend.position-right, .mscharts-legend.position-left {	
+        flex-direction: column;	
+        bottom: 0;	
+      }	
+      .mscharts-legend.position-bottom.left, .mscharts-legend.position-top.left, .mscharts-legend.position-right, .mscharts-legend.position-left {	
+        justify-content: flex-start;	
+      }	
+      .mscharts-legend.position-bottom.center, .mscharts-legend.position-top.center {	
+        justify-content: center;  	
+      }	
+      .mscharts-legend.position-bottom.right, .mscharts-legend.position-top.right {	
+        justify-content: flex-end;	
+      }	
+      .mscharts-legend-series {	
+        cursor: pointer;	
+        line-height: normal;	
+      }	
+      .mscharts-legend.position-bottom .mscharts-legend-series, .mscharts-legend.position-top .mscharts-legend-series{	
+        display: flex;	
+        align-items: center;	
+      }	
+      .mscharts-legend-text {	
+        position: relative;	
+        font-size: 14px;	
+      }	
+      .mscharts-legend-text *, .mscharts-legend-marker * {	
+        pointer-events: none;	
+      }	
+      .mscharts-legend-marker {	
+        position: relative;	
+        display: inline-block;	
+        cursor: pointer;	
+        margin-right: 3px;	
+      }	
+      	
+      .mscharts-legend.right .mscharts-legend-series, .mscharts-legend.left .mscharts-legend-series{	
+        display: inline-block;	
+      }	
+      .mscharts-legend-series.no-click {	
+        cursor: auto;	
+      }	
+      .mscharts-legend .mscharts-hidden-zero-series, .mscharts-legend .mscharts-hidden-null-series {	
+        display: none !important;	
+      }	
+      .inactive-legend {	
+        opacity: 0.45;	
+      }`
+
+    var rules = document.createTextNode(text)
+
+    stylesheet.appendChild(rules)
+
+    return stylesheet
   }
 
   appendToForeignObject() {
@@ -454,87 +518,6 @@ class Legend {
 
       this.toggleDataSeries(seriesCnt, isHidden)
     }
-  }
-
-  getLegendStyles() {
-    var stylesheet = document.createElement('style')
-    stylesheet.setAttribute('type', 'text/css')
-
-    const text = `
-    
-      .mscharts-legend {
-        display: flex;
-        overflow: auto;
-        padding: 0 10px;
-      }
-
-      .mscharts-legend.position-bottom, .mscharts-legend.position-top {
-        flex-wrap: wrap
-      }
-      .mscharts-legend.position-right, .mscharts-legend.position-left {
-        flex-direction: column;
-        bottom: 0;
-      }
-
-      .mscharts-legend.position-bottom.left, .mscharts-legend.position-top.left, .mscharts-legend.position-right, .mscharts-legend.position-left {
-        justify-content: flex-start;
-      }
-
-      .mscharts-legend.position-bottom.center, .mscharts-legend.position-top.center {
-        justify-content: center;  
-      }
-
-      .mscharts-legend.position-bottom.right, .mscharts-legend.position-top.right {
-        justify-content: flex-end;
-      }
-
-      .mscharts-legend-series {
-        cursor: pointer;
-        line-height: normal;
-      }
-
-      .mscharts-legend.position-bottom .mscharts-legend-series, .mscharts-legend.position-top .mscharts-legend-series{
-        display: flex;
-        align-items: center;
-      }
-
-      .mscharts-legend-text {
-        position: relative;
-        font-size: 14px;
-      }
-
-      .mscharts-legend-text *, .mscharts-legend-marker * {
-        pointer-events: none;
-      }
-
-      .mscharts-legend-marker {
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-        margin-right: 3px;
-      }
-      
-      .mscharts-legend.right .mscharts-legend-series, .mscharts-legend.left .mscharts-legend-series{
-        display: inline-block;
-      }
-
-      .mscharts-legend-series.no-click {
-        cursor: auto;
-      }
-
-      .mscharts-legend .mscharts-hidden-zero-series, .mscharts-legend .mscharts-hidden-null-series {
-        display: none !important;
-      }
-
-      .inactive-legend {
-        opacity: 0.45;
-      }`
-
-    var rules = document.createTextNode(text)
-
-    stylesheet.appendChild(rules)
-
-    return stylesheet
   }
 
   toggleDataSeries(seriesCnt, isHidden) {

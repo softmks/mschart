@@ -379,10 +379,7 @@ class Pie {
       'mouseenter',
       graphics.pathMouseEnter.bind(this, elPath)
     )
-    elPath.node.addEventListener(
-      'mouseenter',
-      this.printDataLabelsInner.bind(this, elPath.node, dataLabels)
-    )
+
     elPath.node.addEventListener(
       'mouseleave',
       graphics.pathMouseLeave.bind(this, elPath)
@@ -395,10 +392,18 @@ class Pie {
       'mousedown',
       graphics.pathMouseDown.bind(this, elPath)
     )
-    elPath.node.addEventListener(
-      'mousedown',
-      this.printDataLabelsInner.bind(this, elPath.node, dataLabels)
-    )
+
+    if (!this.donutDataLabels.total.showAlways) {
+      elPath.node.addEventListener(
+        'mouseenter',
+        this.printDataLabelsInner.bind(this, elPath.node, dataLabels)
+      )
+
+      elPath.node.addEventListener(
+        'mousedown',
+        this.printDataLabelsInner.bind(this, elPath.node, dataLabels)
+      )
+    }
   }
 
   // This function can be used for other circle charts too
@@ -474,7 +479,7 @@ class Pie {
           }
 
           if (opts.i === w.config.series.length - 1) {
-            animations.animationCompleted()
+            animations.animationCompleted(el)
           }
         })
         .during(function(pos) {
